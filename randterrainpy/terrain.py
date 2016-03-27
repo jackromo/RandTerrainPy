@@ -2,14 +2,7 @@
 
 
 class Terrain(object):
-    """Container for a randomly generated area of terrain.
-
-    Attributes:
-        width (int): Width of generated terrain.
-        length (int): Length of generated terrain.
-        height_map (list): Map of heights of terrain. Values range from 0 to 1.
-
-    """
+    """Container for a randomly generated area of terrain."""
 
     def __init__(self, width, length):
         """Initializer for Terrain.
@@ -19,9 +12,20 @@ class Terrain(object):
             length (int): Height of terrain.
 
         """
-        self.width = width
-        self.length = length
-        self.height_map = [[0 for _ in range(self.width)]] * self.length
+        self._width = width
+        self._length = length
+        self._height_map = [[0 for _ in range(self.width)]] * self.length
+        """List[list[float]]: Map of heights of all points in terrain grid."""
+
+    @property
+    def width(self):
+        """int: Width of terrain."""
+        return self._width
+
+    @property
+    def length(self):
+        """int: Height of terrain."""
+        return self._length
 
     def __getitem__(self, item):
         """Get an item at x-y coordinates.
@@ -33,7 +37,7 @@ class Terrain(object):
             float: Height of terrain at coordinates, between 0 and 1.
 
         """
-        return self.height_map[item[1]][item[0]]
+        return self._height_map[item[1]][item[0]]
 
     def __setitem__(self, key, value):
         """Set the height of an item.
@@ -43,7 +47,7 @@ class Terrain(object):
             value (float): New height of map at x and y coordinates, between 0 and 1.
 
         """
-        self.height_map[key[1]][key[0]] = value
+        self._height_map[key[1]][key[0]] = value
 
     def __add__(self, other):
         """Add two terrains, height by height. Maximum value of element is 1.
@@ -103,5 +107,5 @@ class Terrain(object):
         """
         result = ""
         for x in range(self.length):
-            result += "\t".join("{0:.1f}".format(i) for i in self.height_map[x]) + "\n"
+            result += "\t".join("{0:.1f}".format(i) for i in self._height_map[x]) + "\n"
         return result
