@@ -21,7 +21,7 @@ class Terrain(object):
         """
         self.width = width
         self.length = length
-        self.height_map = [[0 for _ in self.width]] * self.length
+        self.height_map = [[0 for _ in range(self.width)]] * self.length
 
     def __getitem__(self, item):
         """Get an item at x-y coordinates.
@@ -92,4 +92,16 @@ class Terrain(object):
             for j in range(self.length):
                 val = self[i, j] * other
                 result[i, j] = val if 0 < val < 1 else round(val)
+        return result
+
+    def __str__(self):
+        """Return string representation of self.
+
+        Returns:
+            str: String of float's, to 1 decimal place, in a 2D grid of heights.
+
+        """
+        result = ""
+        for x in range(self.length):
+            result += "\t".join("{0:.1f}".format(i) for i in self.height_map[x]) + "\n"
         return result
