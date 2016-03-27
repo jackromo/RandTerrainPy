@@ -44,3 +44,19 @@ class Terrain(object):
 
         """
         self.height_map[key[1]][key[0]] = value
+
+    def __add__(self, other):
+        """Add two terrains, height by height.
+
+        Args:
+            other (Terrain): Other terrain to add self to. Must have same dimensions as self.
+
+        Returns:
+            Terrain: Terrain of self and other added together.
+
+        """
+        result = Terrain(self.width, self.length)
+        for i in range(self.width):
+            for j in range(self.length):
+                result[i, j] = self[i, j] + other[i, j]
+        return result
