@@ -46,29 +46,29 @@ class Terrain(object):
         self.height_map[key[1]][key[0]] = value
 
     def __add__(self, other):
-        """Add two terrains, height by height.
+        """Add two terrains, height by height. Maximum value of element is 1.
 
         Args:
             other (Terrain): Other terrain to add self to. Must have same dimensions as self.
 
         Returns:
-            Terrain: Terrain of self and other added together.
+            Terrain: Terrain of heights of self and other added together.
 
         """
         result = Terrain(self.width, self.length)
         for i in range(self.width):
             for j in range(self.length):
-                result[i, j] = self[i, j] + other[i, j]
+                result[i, j] = min(self[i, j] + other[i, j], 1)
         return result
 
     def __sub__(self, other):
-        """Subtract two terrains, height by height. Minimum value is 0.
+        """Subtract two terrains, height by height. Minimum value of element is 0.
 
         Args:
             other (Terrain): Other terrain to subtract self from. Must have same dimensions as self.
 
         Returns:
-            Terrain: Terrain of self and other added together.
+            Terrain: Terrain of heights of self subtracted from other.
 
         """
         result = Terrain(self.width, self.length)
