@@ -60,3 +60,19 @@ class Terrain(object):
             for j in range(self.length):
                 result[i, j] = self[i, j] + other[i, j]
         return result
+
+    def __sub__(self, other):
+        """Subtract two terrains, height by height. Minimum value is 0.
+
+        Args:
+            other (Terrain): Other terrain to subtract self from. Must have same dimensions as self.
+
+        Returns:
+            Terrain: Terrain of self and other added together.
+
+        """
+        result = Terrain(self.width, self.length)
+        for i in range(self.width):
+            for j in range(self.length):
+                result[i, j] = max(self[i, j] - other[i, j], 0)
+        return result
