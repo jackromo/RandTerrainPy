@@ -76,3 +76,20 @@ class Terrain(object):
             for j in range(self.length):
                 result[i, j] = max(self[i, j] - other[i, j], 0)
         return result
+
+    def __mul__(self, other):
+        """Multiply self with scalar; scales all values down by scalar, bounded by 0 and 1.
+
+        Args:
+            other (float): Scalar to scale self by.
+
+        Returns:
+            Terrain: Terrain of heights of self multiplied by other.
+
+        """
+        result = Terrain(self.width, self.length)
+        for i in range(self.width):
+            for j in range(self.length):
+                val = self[i, j] * other
+                result[i, j] = val if 0 < val < 1 else round(val)
+        return result
