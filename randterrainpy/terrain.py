@@ -1,5 +1,7 @@
 """This module is for the Terrain class, used for storing randomly generated terrain."""
 
+from exceptions import *
+
 
 class Terrain(object):
     """Container for a randomly generated area of terrain."""
@@ -58,7 +60,12 @@ class Terrain(object):
         Returns:
             Terrain: Terrain of heights of self and other added together.
 
+        Raises:
+            InvalidDimensionsError: Other and self have different widths and lengths.
+
         """
+        if other.length != self.length or other.width != self.width:
+            raise InvalidDimensionsError()
         result = Terrain(self.width, self.length)
         for i in range(self.width):
             for j in range(self.length):
@@ -74,7 +81,12 @@ class Terrain(object):
         Returns:
             Terrain: Terrain of heights of self subtracted from other.
 
+        Raises:
+            InvalidDimensionsError: Other and self have different widths and lengths.
+
         """
+        if other.length != self.length or other.width != self.width:
+            raise InvalidDimensionsError()
         result = Terrain(self.width, self.length)
         for i in range(self.width):
             for j in range(self.length):
