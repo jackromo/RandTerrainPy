@@ -51,6 +51,20 @@ class Terrain(object):
         """
         self._height_map[key[1]][key[0]] = value
 
+    def __eq__(self, other):
+        """Test equality, element by element.
+
+        Returns:
+            bool: True if all heights in first are equal to other and same dimensions, False otherwise.
+
+        """
+        if not isinstance(other, Terrain):
+            return False
+        elif not (other.width == self.width and other.length == self.length):
+            return False
+        else:
+            return all(self[x, y] == other[x, y] for x in range(self.width) for y in range(self.length))
+
     def __add__(self, other):
         """Add two terrains, height by height. Maximum value of element is 1.
 
