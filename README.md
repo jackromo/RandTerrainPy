@@ -20,6 +20,7 @@ within the main directory.
 
 * 3D Terrain class
     * Grid of heights between 0 and 1
+    * Addition and subtraction of Terrains, multiplication with scalar
     * Basic string representation
 * Terrain generators
     * Diamond square algorithm
