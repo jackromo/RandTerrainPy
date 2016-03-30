@@ -44,14 +44,15 @@ class Terrain(object):
         return self._height_map[item[1] % self.length][item[0] % self.width]
 
     def __setitem__(self, key, value):
-        """Set the height of an item.
+        """Set the height of an item, bounded within 0 and 1.
 
         Args:
             key (tuple): 2-tuple of x and y coordinates.
-            value (float): New height of map at x and y coordinates, between 0 and 1.
+            value (float): New height of map at x and y coordinates. Set to 0 or 1 if not 0 < value < 1.
 
         """
-        self._height_map[key[1] % self.length][key[0] % self.width] = value
+        val = value if 0 < value < 1 else (1 if value >= 1 else 0)
+        self._height_map[key[1] % self.length][key[0] % self.width] = val
 
     def __eq__(self, other):
         """Test equality, element by element.
@@ -85,7 +86,7 @@ class Terrain(object):
         result = Terrain(self.width, self.length)
         for i in range(self.width):
             for j in range(self.length):
-                result[i, j] = min(self[i, j] + other[i, j], 1)
+                result[i, j] = self[i, j] + other[i, j]     # Capped value of 1 is implicit in setter
         return result
 
     def __sub__(self, other):
@@ -106,7 +107,7 @@ class Terrain(object):
         result = Terrain(self.width, self.length)
         for i in range(self.width):
             for j in range(self.length):
-                result[i, j] = max(self[i, j] - other[i, j], 0)
+                result[i, j] = self[i, j] - other[i, j]     # Minimum 0 value is implicit in setter
         return result
 
     def __mul__(self, other):
@@ -123,7 +124,7 @@ class Terrain(object):
         for i in range(self.width):
             for j in range(self.length):
                 val = self[i, j] * other
-                result[i, j] = val if 0 < val < 1 else round(val)
+                result[i, j] = val  # Bounding of value between 0 and 1 implicit in setter
         return result
 
     def __str__(self):
