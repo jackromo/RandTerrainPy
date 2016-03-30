@@ -18,4 +18,9 @@ within the main directory.
 
 ## Features
 
-This project has not yet begun, so no features have been implemented.
+* 3D Terrain class
+    * Grid of heights between 0 and 1
+    * Basic string representation
+* Terrain generators
+    * Diamond square algorithm
+        * Takes noise color function (from frequency to amplitude)
