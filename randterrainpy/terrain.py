@@ -16,7 +16,7 @@ class Terrain(object):
         """
         self._width = width
         self._length = length
-        self._height_map = [[0 for _ in range(self.width)]] * self.length
+        self._height_map = [[0 for _ in range(self.width)] for _ in range(self.length)]
         """List[list[float]]: Map of heights of all points in terrain grid."""
 
     @property
@@ -32,6 +32,8 @@ class Terrain(object):
     def __getitem__(self, item):
         """Get an item at x-y coordinates.
 
+        Indices out of range are taken modulo (length or width).
+
         Args:
             item (tuple): 2-tuple of x and y coordinates.
 
@@ -39,7 +41,7 @@ class Terrain(object):
             float: Height of terrain at coordinates, between 0 and 1.
 
         """
-        return self._height_map[item[1]][item[0]]
+        return self._height_map[item[1] % self.length][item[0] % self.width]
 
     def __setitem__(self, key, value):
         """Set the height of an item.
@@ -49,7 +51,7 @@ class Terrain(object):
             value (float): New height of map at x and y coordinates, between 0 and 1.
 
         """
-        self._height_map[key[1]][key[0]] = value
+        self._height_map[key[1] % self.length][key[0] % self.width] = value
 
     def __eq__(self, other):
         """Test equality, element by element.
@@ -133,5 +135,5 @@ class Terrain(object):
         """
         result = ""
         for x in range(self.length):
-            result += "\t".join("{0:.1f}".format(i) for i in self._height_map[x]) + "\n"
+            result += "\t".join("{0:.1f}".format(abs(i)) for i in self._height_map[x]) + "\n"
         return result
