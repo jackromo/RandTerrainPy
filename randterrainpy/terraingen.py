@@ -119,7 +119,8 @@ class DiamondSquareGenerator(TerrainGenerator):
                            terrain[x - half_len, y + half_len],
                            terrain[x + half_len, y - half_len],
                            terrain[x + half_len, y + half_len]]) / 4.0
-        offset = 0  # TODO
+        frequency = terrain.length / square_len
+        offset = random.random() * (self.amp_from_freq(frequency) - 0.5)
         terrain[x, y] = mean_height + offset
         return terrain
 
@@ -138,10 +139,12 @@ class DiamondSquareGenerator(TerrainGenerator):
             Terrain: New terrain with updated square center.
 
         """
-        mean_height = sum([terrain[x, y - diamond_len],
-                           terrain[x + diamond_len, y],
-                           terrain[x, y + diamond_len],
-                           terrain[x - diamond_len, y]]) / 4.0
-        offset = 0  # TODO
+        half_len = diamond_len / 2
+        mean_height = sum([terrain[x, y - half_len],
+                           terrain[x + half_len, y],
+                           terrain[x, y + half_len],
+                           terrain[x - half_len, y]]) / 4.0
+        frequency = terrain.length / diamond_len
+        offset = random.random() * (self.amp_from_freq(frequency) - 0.5)
         terrain[x, y] = mean_height + offset
         return terrain
