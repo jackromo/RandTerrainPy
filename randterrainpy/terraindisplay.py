@@ -15,8 +15,8 @@ class Terrain2D(Frame):
 
     """
 
-    DIMENSIONS = "250x150"
-    """Dimensions of the window for a Terrain2D."""
+    SQUARE_SIDE = 3
+    """Length of one side of colored square."""
 
     @classmethod
     def display_terrain(cls, terrain):
@@ -27,7 +27,9 @@ class Terrain2D(Frame):
 
         """
         root = Tk()
-        root.geometry(Terrain2D.DIMENSIONS)
+        dimensions = "{0}x{1}".format(terrain.width * Terrain2D.SQUARE_SIDE,
+                                      terrain.length * Terrain2D.SQUARE_SIDE)
+        root.geometry(dimensions)
         app = Terrain2D(root, terrain)
         root.mainloop()
 
@@ -57,5 +59,14 @@ class Terrain2D(Frame):
 
         """
         canvas = Canvas(self)
-        # TODO: add code to draw squares here
+        for x in range(self.terrain.width):
+            for y in range(self.terrain.length):
+                x_pos = x * Terrain2D.SQUARE_SIDE
+                y_pos = y * Terrain2D.SQUARE_SIDE
+                color = int(self.terrain[x, y] * 15)
+                hex_color = "#" + "0123456789abcdef"[color] * 3
+                canvas.create_rectangle(x_pos, y_pos,
+                                        x_pos + Terrain2D.SQUARE_SIDE,
+                                        y_pos + Terrain2D.SQUARE_SIDE,
+                                        outline=hex_color, fill=hex_color)
         canvas.pack(fill=BOTH, expand=1)
