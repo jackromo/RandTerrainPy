@@ -8,7 +8,7 @@
 ## Future Features
 
 * Terrain class for random height map
-    * Graphics support (2D and 3D)
+    * 3D graphics support
     * Saving and loading terrains
 * Noise generation
     * White, red, pink, blue and violet noise

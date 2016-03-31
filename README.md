@@ -22,6 +22,7 @@ within the main directory.
     * Grid of heights between 0 and 1
     * Addition and subtraction of Terrains, multiplication with scalar
     * Basic string representation
+    * 2D graphical representation
 * Terrain generators
     * Diamond square algorithm
         * Takes noise color function (from frequency to amplitude)
