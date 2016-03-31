@@ -4,7 +4,7 @@
 
 """
 
-from Tkinter import Tk, Frame, BOTH
+from Tkinter import Tk, Canvas, Frame, BOTH
 
 
 class Terrain2D(Frame):
@@ -20,17 +20,42 @@ class Terrain2D(Frame):
 
     @classmethod
     def display_terrain(cls, terrain):
+        """Display a Terrain in 2D.
+
+        Args:
+            terrain (Terrain): Terrain to display.
+
+        """
         root = Tk()
         root.geometry(Terrain2D.DIMENSIONS)
         app = Terrain2D(root, terrain)
         root.mainloop()
 
     def __init__(self, parent, terrain):
+        """Make self child of a TK parent, then initialize own UI.
+
+        Args:
+            parent (TK): Parent to attach self to.
+            terrain (Terrain): Terrain to display.
+
+        """
         Frame.__init__(self, parent)
         self.terrain = terrain
         self.parent = parent
         self.init_ui()
 
     def init_ui(self):
+        """Initialize UI of window."""
         self.parent.title("Terrain (top-down)")
         self.pack(fill=BOTH, expand=1)
+        self.draw_heights()
+
+    def draw_heights(self):
+        """Draw grid of height values on window.
+
+        Heights are shown as squares, with greyscale colors becoming brighter for greater heights.
+
+        """
+        canvas = Canvas(self)
+        # TODO: add code to draw squares here
+        canvas.pack(fill=BOTH, expand=1)
