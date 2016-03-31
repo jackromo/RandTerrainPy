@@ -120,7 +120,7 @@ class DiamondSquareGenerator(TerrainGenerator):
                            terrain[x + half_len, y - half_len],
                            terrain[x + half_len, y + half_len]]) / 4.0
         frequency = terrain.length / square_len
-        offset = random.random() * (self.amp_from_freq(frequency) - 0.5)
+        offset = (random.random() - 0.5) * self.amp_from_freq(frequency)
         terrain[x, y] = mean_height + offset
         return terrain
 
@@ -145,6 +145,6 @@ class DiamondSquareGenerator(TerrainGenerator):
                            terrain[x, y + half_len],
                            terrain[x - half_len, y]]) / 4.0
         frequency = terrain.length / diamond_len
-        offset = random.random() * (self.amp_from_freq(frequency) - 0.5)
+        offset = (random.random() - 0.5) * self.amp_from_freq(frequency)
         terrain[x, y] = mean_height + offset
         return terrain
