@@ -1,6 +1,7 @@
 """This module is for the Terrain class, used for storing randomly generated terrain."""
 
 from exceptions import *
+from terraindisplay import *
 
 
 class Terrain(object):
@@ -138,3 +139,11 @@ class Terrain(object):
         for x in range(self.length):
             result += "\t".join("{0:.1f}".format(abs(i)) for i in self._height_map[x]) + "\n"
         return result
+
+    def display_2d(self):
+        """Display a 2D top-down image of terrain as a grid of greyscale squares.
+
+        Each square corresponds to a height value, being on a scale from white if 1 to black if 0.
+
+        """
+        Terrain2D.display_terrain(self)
