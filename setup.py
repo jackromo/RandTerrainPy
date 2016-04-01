@@ -12,7 +12,8 @@ setup(
     platforms="any",
     packages=['randterrainpy'],
     install_requires=[
-        "sphinx>=1.3.6"
+        "matplotlib>=1.5",
+        "numpy>=1.6"
     ],
     classifiers=[
         "Operating System :: OS Independent",
