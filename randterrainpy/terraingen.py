@@ -148,3 +148,38 @@ class DiamondSquareGenerator(TerrainGenerator):
         offset = (random.random() - 0.5) * self.amp_from_freq(frequency)
         terrain[x, y] = mean_height + offset
         return terrain
+
+
+class RedNoiseGenerator(DiamondSquareGenerator):
+    """Diamond square terrain generator with red noise (amplitude = 1 / (frequency^2))."""
+
+    def __new__(cls, *args, **kwargs):
+        return DiamondSquareGenerator(lambda f: f ** -2)
+
+
+class PinkNoiseGenerator(DiamondSquareGenerator):
+    """Diamond square terrain generator with pink noise (amplitude = 1 / frequency)."""
+
+    def __new__(cls, *args, **kwargs):
+        return DiamondSquareGenerator(lambda f: f ** -1)
+
+
+class WhiteNoiseGenerator(DiamondSquareGenerator):
+    """Diamond square terrain generator with white noise (amplitude = 1)."""
+
+    def __new__(cls, *args, **kwargs):
+        return DiamondSquareGenerator(lambda f: 1)
+
+
+class BlueNoiseGenerator(DiamondSquareGenerator):
+    """Diamond square terrain generator with blue noise (amplitude = frequency)."""
+
+    def __new__(cls, *args, **kwargs):
+        return DiamondSquareGenerator(lambda f: f)
+
+
+class VioletNoiseGenerator(DiamondSquareGenerator):
+    """Diamond square terrain generator with violet noise (amplitude = frequency^2)."""
+
+    def __new__(cls, *args, **kwargs):
+        return DiamondSquareGenerator(lambda f: f ** 2)
