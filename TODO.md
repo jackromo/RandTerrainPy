@@ -8,7 +8,6 @@
 ## Future Features
 
 * Terrain class for random height map
-    * 3D graphics support
     * Saving and loading terrains
     * Voronoi diagrams (subclass of Terrain)
         * Input set of points to make regions around
@@ -28,5 +27,5 @@
     * Island generator
         * Voronoi diagram for all sections of island / sea
         * Different 'biomes' for each 
-            * Sea, shore, valley, 
+            * Sea, shore, valley, mountain, etc.
     * Continuous procedural terrain generation (generated on the fly)

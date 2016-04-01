@@ -5,6 +5,8 @@
 """
 
 from Tkinter import Tk, Canvas, Frame, BOTH
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 class Terrain2D(Frame):
@@ -70,3 +72,30 @@ class Terrain2D(Frame):
                                         y_pos + Terrain2D.SQUARE_SIDE,
                                         outline=hex_color, fill=hex_color)
         canvas.pack(fill=BOTH, expand=1)
+
+
+class Terrain3D(object):
+    """A 3D representation of a Terrain.
+
+    Consists of a 3D surface mesh, shown at an angle. Can be seen at different angles.
+    Uses matplotlib.mplot3d to display rudimentary 3D version of terrain.
+
+    Notes:
+        Is somewhat guaranteed to be slow. Not intended for use other than visualizing terrain during development.
+
+    """
+
+    def __init__(self, terrain):
+        self.terrain = terrain
+        self.x_grid, self.y_grid = np.meshgrid(range(self.terrain.width),
+                                               range(self.terrain.length))
+        z_vals = np.array([self.terrain[x, y] for x, y in zip(np.ravel(self.x_grid), np.ravel(self.y_grid))])
+        self.z_grid = z_vals.reshape(self.x_grid.shape)
+
+    def display_terrain(self):
+        """Display 3D surface of terrain."""
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        ax.plot_surface(self.x_grid, self.y_grid, self.z_grid)
+        ax.set_zlim(0.0, 1.0)
+        plt.show()

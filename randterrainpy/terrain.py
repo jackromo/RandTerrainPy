@@ -147,3 +147,12 @@ class Terrain(object):
 
         """
         Terrain2D.display_terrain(self)
+
+    def display_3d(self):
+        """Display a 3D image of terrain as a surface mesh.
+
+        Notes:
+            Uses matplotlib internally; is guaranteed to be somewhat slow, so intended for testing only.
+
+        """
+        Terrain3D(self).display_terrain()
