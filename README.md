@@ -26,3 +26,4 @@ within the main directory.
 * Terrain generators
     * Diamond square algorithm
         * Takes noise color function (from frequency to amplitude)
+        * Red, pink, white, blue, and violet preset noises

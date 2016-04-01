@@ -11,6 +11,5 @@
     * 3D graphics support
     * Saving and loading terrains
 * Noise generation
-    * White, red, pink, blue and violet noise
     * Perturbed grids of squares and hexagons
     * Voronoi diagrams (subclass of Terrain)
