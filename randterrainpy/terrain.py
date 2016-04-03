@@ -156,3 +156,28 @@ class Terrain(object):
 
         """
         Terrain3D(self).display_terrain()
+
+
+class VoronoiTerrain(Terrain):
+    """A Terrain where a set of regions are defined of positions closest to certain points.
+
+    The diagram takes a preset group of points,
+    and makes each position on the grid aware of which point its closest to.
+
+    """
+
+    def __init__(self, width, length, points):
+        """
+
+        Args:
+            width (int): Width of terrain.
+            length (int): Length of terrain.
+            points (list[tuple(int, int)]): List of seed points to define regions in diagram around.
+
+        """
+        super(Terrain, self).__init__(width, length)
+        self._points = points
+        """int: List of all points to define regions around."""
+        self._region_map = []
+        """List[list[int]]: 2-dimensional list of indices of which region each position is in."""
+        # TODO: initialize region_map
