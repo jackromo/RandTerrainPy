@@ -2,8 +2,7 @@
 
 ## General
 
-* Tests for TerrainGenerator and DiamondSquareGenerator
-* Exception for Terrain setter value out of range (0, 1)
+* Tests for TerrainGenerator, DiamondSquareGenerator and Terrain2D/3D
 
 ## Future Features
 

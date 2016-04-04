@@ -49,11 +49,15 @@ class Terrain(object):
 
         Args:
             key (tuple): 2-tuple of x and y coordinates.
-            value (float): New height of map at x and y coordinates. Set to 0 or 1 if not 0 < value < 1.
+            value (float): New height of map at x and y coordinates.
+
+        Raises:
+            HeightOutOfBoundsError: Value is not between 0 and 1, when rounded to 3 decimal places.
 
         """
-        val = value if 0 < value < 1 else (1 if value >= 1 else 0)
-        self._height_map[key[1] % self.length][key[0] % self.width] = val
+        if not 0 <= round(value, 3) <= 1:
+            raise HeightOutOfBoundsError()
+        self._height_map[key[1] % self.length][key[0] % self.width] = round(value, 3)
 
     def __eq__(self, other):
         """Test equality, element by element.
@@ -87,7 +91,8 @@ class Terrain(object):
         result = Terrain(self.width, self.length)
         for i in range(self.width):
             for j in range(self.length):
-                result[i, j] = self[i, j] + other[i, j]     # Capped value of 1 is implicit in setter
+                val = self[i, j] + other[i, j]
+                result[i, j] = 1 if val > 1 else val
         return result
 
     def __sub__(self, other):
@@ -108,7 +113,8 @@ class Terrain(object):
         result = Terrain(self.width, self.length)
         for i in range(self.width):
             for j in range(self.length):
-                result[i, j] = self[i, j] - other[i, j]     # Minimum 0 value is implicit in setter
+                val = self[i, j] - other[i, j]
+                result[i, j] = 0 if val < 0 else val
         return result
 
     def __mul__(self, other):
@@ -125,7 +131,7 @@ class Terrain(object):
         for i in range(self.width):
             for j in range(self.length):
                 val = self[i, j] * other
-                result[i, j] = val  # Bounding of value between 0 and 1 implicit in setter
+                result[i, j] = val if 0 < val < 1 else (0 if val < 0 else 1)
         return result
 
     def __str__(self):
