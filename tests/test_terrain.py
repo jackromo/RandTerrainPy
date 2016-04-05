@@ -2,7 +2,7 @@ import unittest
 from randterrainpy import *
 
 
-class TerrainTesterPy(unittest.TestCase):
+class TerrainTester(unittest.TestCase):
 
     def setUp(self):
         self.ter1 = Terrain(1, 1)
