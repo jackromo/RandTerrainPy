@@ -28,3 +28,4 @@
         * Different 'biomes' for each 
             * Sea, shore, valley, mountain, etc.
     * Continuous procedural terrain generation (generated on the fly)
+        * Use DiamondSquare on square regions, copy over adjacent region's edge to influence next area's generation
