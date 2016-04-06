@@ -6,6 +6,10 @@ This is a random terrain generator for Python. It's a work in progress, but if y
 
 This project is licensed under the [MIT license (MIT)](LICENSE).
 
+## Requirements
+
+This software requires matplotlib (>=1.5), and numpy (>=1.6).
+
 ## Installation
 
 This program can be installed by downloading the software and entering
