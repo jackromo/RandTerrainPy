@@ -183,7 +183,17 @@ class VoronoiTerrain(Terrain):
         """
         super(Terrain, self).__init__(width, length)
         self._points = points
-        """int: List of all points to define regions around."""
-        self._region_map = []
-        """List[list[int]]: 2-dimensional list of indices of which region each position is in."""
-        # TODO: initialize region_map
+        """List[tuple(int, int)]: List of all points to define regions around."""
+        self._region_map = [[0 for _ in range(self.width)] for _ in range(self.length)]
+        """List[list[int]]: 2-dimensional list of indices of which point each position is closest to."""
+        # Initialize region_map
+        for x in range(self.width):
+            for y in range(self.length):
+                min_dist = self.width**2 + self.length**2
+                closest_pnt_index = 0
+                for pnt in self._points:
+                    dist_squared = (pnt[0] - x)**2 + (pnt[1] - y)**2
+                    if dist_squared < min_dist:
+                        min_dist = dist_squared
+                        closest_pnt_index = self._points.index(pnt)
+                self._region_map[y][x] = closest_pnt_index
