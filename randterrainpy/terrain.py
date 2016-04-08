@@ -1,5 +1,6 @@
 """This module is for the Terrain class, used for storing randomly generated terrain."""
 
+import copy
 from exceptions import *
 from terraindisplay import *
 
@@ -197,3 +198,21 @@ class VoronoiTerrain(Terrain):
                         min_dist = dist_squared
                         closest_pnt_index = self._points.index(pnt)
                 self._region_map[y][x] = closest_pnt_index
+
+    @property
+    def points(self):
+        """List[tuple(int, int)]: List of all points to define regions around."""
+        return copy.deepcopy(self._points)  # list is mutable, don't allow user to alter it
+
+    def get_closest_point(self, x, y):
+        """Get the index of the closest point to a position.
+
+        Args:
+            x (int): X coordinate of position.
+            y (int): Y coordinate of position.
+
+        Returns:
+            tuple(int, int): X-Y coordinates of closest point in Voronoi diagram to position.
+
+        """
+        return self._region_map[y][x]
