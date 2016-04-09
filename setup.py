@@ -12,8 +12,8 @@ setup(
     platforms="any",
     packages=['randterrainpy'],
     install_requires=[
-        "matplotlib>=1.5",
-        "numpy>=1.6"
+        "matplotlib>=1.5.1",
+        "numpy>=1.6.2"
     ],
     classifiers=[
         "Operating System :: OS Independent",
