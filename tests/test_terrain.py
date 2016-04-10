@@ -43,5 +43,9 @@ class TerrainTester(unittest.TestCase):
         self.assertNotEqual(self.ter2*0.5, self.ter2)
 
 
+class VoronoiTerrainTester(unittest.TestCase):
+    pass
+
+
 if __name__ == "__main__":
     unittest.main()
