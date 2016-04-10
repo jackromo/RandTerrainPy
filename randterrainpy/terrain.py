@@ -169,7 +169,7 @@ class VoronoiTerrain(Terrain):
     """A Terrain where a set of regions are defined of positions closest to certain points.
 
     The diagram takes a preset group of points,
-    and makes each position on the grid aware of which point its closest to.
+    and makes each position on the grid aware of which point it is closest to.
 
     """
 
@@ -187,7 +187,10 @@ class VoronoiTerrain(Terrain):
         """List[tuple(int, int)]: List of all points to define regions around."""
         self._region_map = [[0 for _ in range(self.width)] for _ in range(self.length)]
         """List[list[int]]: 2-dimensional list of indices of which point each position is closest to."""
-        # Initialize region_map
+        self._init_regions()
+
+    def _init_regions(self):
+        """Initialize region map."""
         for x in range(self.width):
             for y in range(self.length):
                 min_dist = self.width**2 + self.length**2
@@ -216,3 +219,14 @@ class VoronoiTerrain(Terrain):
 
         """
         return self._region_map[y][x]
+
+    def add_point(self, x, y):
+        """Add a point to make region around.
+
+        Args:
+            x (int): X coordinate of point.
+            y (int): Y coordinate of point.
+
+        """
+        self._points.append((x, y))
+        self._init_regions()
