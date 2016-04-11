@@ -22,12 +22,14 @@ within the main directory.
 
 ## Features
 
-* 3D Terrain class
+* 3d Terrain class
     * Grid of heights between 0 and 1
     * Addition and subtraction of Terrains, multiplication with scalar
     * Basic string representation
     * 2d and 3d graphical representations
         * Uses matplotlib for 3d, top-down greyscale for 2d
+    * Voronoi diagram version of terrain (UNFINISHED)
+        * Regions defined by closest positions on 2d grid to points
 * Terrain generators
     * Diamond square algorithm
         * Takes noise color function (from frequency to amplitude)
