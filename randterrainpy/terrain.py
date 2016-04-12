@@ -230,3 +230,17 @@ class VoronoiTerrain(Terrain):
         """
         self._points.append((x, y))
         self._init_regions()
+
+    def get_region(self, point_x, point_y):
+        """Gets all positions within the region defined around a point.
+
+        Args:
+            point_x (int): X coordinate of point to get region around.
+            point_y (int): Y coordinate of point to get region around.
+
+        Returns:
+            list[tuple(int, int)]: List of 2-tuples, representing x-y coordinates of positions in region.
+
+        """
+        return [(x, y) for x in range(self.width) for y in range(self.length)
+                if self.get_closest_point(x, y) == (point_x, point_y)]
