@@ -232,7 +232,7 @@ class VoronoiTerrain(Terrain):
         self._init_regions()
 
     def get_region(self, point_x, point_y):
-        """Gets all positions within the region defined around a point.
+        """Get all positions within the region defined around a point.
 
         Args:
             point_x (int): X coordinate of point to get region around.
@@ -244,3 +244,15 @@ class VoronoiTerrain(Terrain):
         """
         return [(x, y) for x in range(self.width) for y in range(self.length)
                 if self.get_closest_point(x, y) == (point_x, point_y)]
+
+    def set_region_height(self, point_x, point_y, height):
+        """Set uniform height of all positions within the region defined around a point.
+
+        Args:
+            point_x (int): X coordinate of point to set region around.
+            point_y (int): Y coordinate of point to set region around.
+            height (float): Uniform height to set all points in region to. Between 0 and 1.
+
+        """
+        for x, y in self.get_region(point_x, point_y):
+            self[x, y] = height
