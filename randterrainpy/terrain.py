@@ -3,6 +3,7 @@
 import copy
 from exceptions import *
 from terraindisplay import *
+import random
 
 
 class Terrain(object):
@@ -256,3 +257,22 @@ class VoronoiTerrain(Terrain):
         """
         for x, y in self.get_region(point_x, point_y):
             self[x, y] = height
+
+    def set_uniform_random_points(self, num_points):
+        """Set region points to be a preset number of new random positions.
+
+        Points are uniformly distributed, but are guaranteed to never be the same.
+
+        Args:
+            num_points (int): Number of points to randomly generate. Must be > 0.
+
+        """
+        self._points = []
+        for pnt_index in range(num_points):
+            made_unique_points = False
+            while not made_unique_points:
+                x, y = random.randint(self.width), random.randint(self.length)
+                if (x, y) not in self._points:
+                    self._points.append((x, y))
+                    made_unique_points = True
+        self._init_regions()
