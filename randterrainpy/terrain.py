@@ -280,3 +280,16 @@ class VoronoiTerrain(Terrain):
                     self._points.append((x, y))
                     made_unique_points = True
         self._init_regions()
+
+    def lloyd_relax(self):
+        """Perform iteration of Lloyd relaxation on center points.
+
+        This involves points being moved to the centroids of their regions,
+        making regions more uniformly distributed.
+
+        """
+        for point_index, region_points in enumerate(self._point_regions):
+            centroid_x = sum(pnt[0] for pnt in region_points) / len(region_points)
+            centroid_y = sum(pnt[1] for pnt in region_points) / len(region_points)
+            self._points[point_index] = (centroid_x, centroid_y)
+        self._init_regions()
