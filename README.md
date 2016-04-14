@@ -30,6 +30,9 @@ within the main directory.
         * Uses matplotlib for 3d, top-down greyscale for 2d
     * Voronoi diagram version of terrain (UNFINISHED)
         * Regions defined by closest positions on 2d grid to points
+        * Input set of points to make regions around
+        * Can alter heights of all points in a region
+        * Uniform randomly generated center points
 * Terrain generators
     * Diamond square algorithm
         * Takes noise color function (from frequency to amplitude)

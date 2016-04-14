@@ -9,14 +9,12 @@
 * Terrain class for random height map
     * Saving and loading terrains
     * Voronoi diagrams (subclass of Terrain)
-        * Input set of points to make regions around
-            * Lloyd relaxation
-        * Can alter heights of all points in a region
+        * Lloyd relaxation
         * Can alter height of center point and corner points
             * Linear interpolation of heights of points to corner / center, within participant regions
 * Noise generation
     * Perlin noise
-    * Random Voronoi diagram generator
+    * Random Voronoi diagram generation
         * Random seed points for regions, give mean / std.dev
         * Random feature points w/ random or preset heights
             * If random, can decide on an interval, mean and std.dev
