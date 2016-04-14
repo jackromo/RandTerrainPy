@@ -183,15 +183,19 @@ class VoronoiTerrain(Terrain):
             points (list[tuple(int, int)]): List of seed points to define regions in diagram around.
 
         """
-        super(Terrain, self).__init__(width, length)
+        super(VoronoiTerrain, self).__init__(width, length)
         self._points = points
         """List[tuple(int, int)]: List of all points to define regions around."""
         self._region_map = [[0 for _ in range(self.width)] for _ in range(self.length)]
         """List[list[int]]: 2-dimensional list of indices of which point each position is closest to."""
+        self._point_regions = [[] for _ in self._points]
+        """List[list[tuple(int, int)]]: Lists of points in each region.
+        Point's index in _points coincides with index in _point_regions."""
         self._init_regions()
 
     def _init_regions(self):
-        """Initialize region map."""
+        """Initialize region map. and list of regions."""
+        self._point_regions = [[] for _ in self._points]    # Reset list of regions
         for x in range(self.width):
             for y in range(self.length):
                 min_dist = self.width**2 + self.length**2
@@ -202,6 +206,7 @@ class VoronoiTerrain(Terrain):
                         min_dist = dist_squared
                         closest_pnt_index = self._points.index(pnt)
                 self._region_map[y][x] = closest_pnt_index
+                self._point_regions[closest_pnt_index] += [(x, y)]
 
     @property
     def points(self):
@@ -243,8 +248,7 @@ class VoronoiTerrain(Terrain):
             list[tuple(int, int)]: List of 2-tuples, representing x-y coordinates of positions in region.
 
         """
-        return [(x, y) for x in range(self.width) for y in range(self.length)
-                if self.get_closest_point(x, y) == (point_x, point_y)]
+        return self._point_regions[self.points.index((point_x, point_y))]
 
     def set_region_height(self, point_x, point_y, height):
         """Set uniform height of all positions within the region defined around a point.
@@ -271,7 +275,7 @@ class VoronoiTerrain(Terrain):
         for pnt_index in range(num_points):
             made_unique_points = False
             while not made_unique_points:
-                x, y = random.randint(self.width), random.randint(self.length)
+                x, y = random.randint(0, self.width), random.randint(0, self.length)
                 if (x, y) not in self._points:
                     self._points.append((x, y))
                     made_unique_points = True
