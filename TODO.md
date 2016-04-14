@@ -9,7 +9,6 @@
 * Terrain class for random height map
     * Saving and loading terrains
     * Voronoi diagrams (subclass of Terrain)
-        * Lloyd relaxation
         * Can alter height of center point and corner points
             * Linear interpolation of heights of points to corner / center, within participant regions
 * Noise generation

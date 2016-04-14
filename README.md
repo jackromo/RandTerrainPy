@@ -33,6 +33,7 @@ within the main directory.
         * Input set of points to make regions around
         * Can alter heights of all points in a region
         * Uniform randomly generated center points
+        * Lloyd relaxation
 * Terrain generators
     * Diamond square algorithm
         * Takes noise color function (from frequency to amplitude)
