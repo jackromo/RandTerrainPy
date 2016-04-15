@@ -297,15 +297,53 @@ class VoronoiTerrain(Terrain):
             self._points[point_index] = (centroid_x, centroid_y)
         self._init_regions()
 
-    def get_feature_points(self, point_x, point_y):
+    def get_feature_points(self, x, y):
         """Get feature points within a particular region.
 
         Args:
-            point_x (int): X coordinate of center point of region.
-            point_y (int): Y coordinate of center point of region.
+            x (int): X coordinate of center point of region.
+            y (int): Y coordinate of center point of region.
 
         Returns:
             list[tuple(int, int)]: List of all x-y coordinates of feature points in region.
 
         """
-        return self._feature_points[self._points.index((point_x, point_y))]
+        return self._feature_points[self._points.index((x, y))]
+
+    def add_feature_point(self, region_x, region_y, x, y):
+        """Add a feature point to a region.
+
+        Args:
+            region_x (int): X coordinate of center point of desired region.
+            region_y (int): Y coordinate of center point of desired region.
+            x (int): X coordinate of feature point.
+            y (int): Y coordinate of feature point.
+
+        Raises:
+            OutOfRegionError: x and y are outside the chosen region.
+
+        """
+        region = self.get_region(region_x, region_y)
+        if (x, y) not in region:
+            raise OutOfRegionError()
+        else:
+            self._feature_points[self._points.index(region_x, region_y)] += [(x, y)]
+
+    def remove_feature_point(self, region_x, region_y, x, y):
+        """Add a feature point to a region.
+
+        Args:
+            region_x (int): X coordinate of center point of desired region.
+            region_y (int): Y coordinate of center point of desired region.
+            x (int): X coordinate of feature point.
+            y (int): Y coordinate of feature point.
+
+        Raises:
+            OutOfRegionError: x and y are outside the chosen region.
+
+        """
+        region = self.get_region(region_x, region_y)
+        if (x, y) not in region:
+            raise OutOfRegionError()
+        else:
+            self._feature_points[self._points.index(region_x, region_y)] += [(x, y)]

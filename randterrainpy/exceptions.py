@@ -14,3 +14,8 @@ class InvalidDimensionsError(Error):
 class HeightOutOfBoundsError(Error):
     """Error raised when height value passed to Terrain not within 0 and 1."""
     pass
+
+
+class OutOfRegionError(Error):
+    """Error raised when stating a point outside a VoronoiTerrain's region is within said region."""
+    pass
