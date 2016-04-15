@@ -191,6 +191,9 @@ class VoronoiTerrain(Terrain):
         self._point_regions = [[] for _ in self._points]
         """List[list[tuple(int, int)]]: Lists of points in each region.
         Point's index in _points coincides with index in _point_regions."""
+        self._feature_points = [[] for _ in self._points]
+        """List[list[tuple(int, int)]]: Lists of feature points in each region.
+        Point's index in _points coincides with index in _point_regions."""
         self._init_regions()
 
     def _init_regions(self):
@@ -293,3 +296,16 @@ class VoronoiTerrain(Terrain):
             centroid_y = sum(pnt[1] for pnt in region_points) / len(region_points)
             self._points[point_index] = (centroid_x, centroid_y)
         self._init_regions()
+
+    def get_feature_points(self, point_x, point_y):
+        """Get feature points within a particular region.
+
+        Args:
+            point_x (int): X coordinate of center point of region.
+            point_y (int): Y coordinate of center point of region.
+
+        Returns:
+            list[tuple(int, int)]: List of all x-y coordinates of feature points in region.
+
+        """
+        return self._feature_points[self._points.index((point_x, point_y))]
