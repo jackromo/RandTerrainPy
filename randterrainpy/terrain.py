@@ -297,6 +297,27 @@ class VoronoiTerrain(Terrain):
             self._points[point_index] = (centroid_x, centroid_y)
         self._init_regions()
 
+    def get_region_edge(self, region_x, region_y):
+        """Get list of all positions on edge of region contained within it.
+
+        Args:
+            region_x (int): X ccordinate of center point of region.
+            region_y (int): Y coordinate of center point of region.
+
+        Returns:
+            list[tuple(int, int)]: List of positions within region on its edge.
+
+        """
+        edge = []
+        for x, y in self.get_region(region_x, region_y):
+            neighbours = [(x-1, y-1), (x-1, y), (x-1, y+1),
+                          (x, y-1), (x, y+1),
+                          (x+1, y-1), (x+1, y), (x+1, y+1)]
+            bounded_neighbours = [(n[0] % self.width, n[1] % self.length) for n in neighbours]
+            if not all(self.get_closest_point(*n) == (region_x, region_y) for n in bounded_neighbours):
+                edge.append((x, y))
+        return edge
+
     def get_feature_points(self, x, y):
         """Get feature points within a particular region.
 
@@ -327,6 +348,7 @@ class VoronoiTerrain(Terrain):
         if (x, y) not in region:
             raise OutOfRegionError()
         else:
+            # TODO: linear interpolation
             self._feature_points[self._points.index(region_x, region_y)] += [(x, y)]
 
     def remove_feature_point(self, region_x, region_y, x, y):
