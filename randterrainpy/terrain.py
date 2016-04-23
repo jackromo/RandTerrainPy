@@ -318,6 +318,34 @@ class VoronoiTerrain(Terrain):
                 edge.append((x, y))
         return edge
 
+    def get_region_corners(self, region_x, region_y):
+        """Get list of all positions of corners of region.
+
+        Corner of region is defined as position between 3 or more different regions.
+
+        Args:
+            region_x (int): X ccordinate of center point of region.
+            region_y (int): Y coordinate of center point of region.
+
+        Returns:
+            list[tuple(int, int)]: List of positions within region on its edge.
+
+        """
+        corners = []
+        for x, y in self.get_region_edge(region_x, region_y):
+            neighbours = [(x-1, y-1), (x-1, y), (x-1, y+1),
+                          (x, y-1), (x, y+1),
+                          (x+1, y-1), (x+1, y), (x+1, y+1)]
+            bounded_neighbours = [(n[0] % self.width, n[1] % self.length) for n in neighbours]
+            adjacent_regions = []
+            for nx, ny in bounded_neighbours:
+                if self.get_closest_point(nx, ny) not in adjacent_regions:
+                    adjacent_regions.append(self.get_closest_point(nx, ny))
+                if len(adjacent_regions) >= 3:
+                    corners.append((x, y))
+                    break
+        return corners
+
     def get_feature_points(self, x, y):
         """Get feature points within a particular region.
 
