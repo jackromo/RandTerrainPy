@@ -254,6 +254,36 @@ class VoronoiTerrain(Terrain):
         """
         return self._point_regions[self.points.index((point_x, point_y))]
 
+    def get_region_length(self, region_x, region_y):
+        """Get side length of bounding box of region.
+
+        Args:
+            region_x (int): X coordinate of center point of region.
+            region_y (int): Y coordinate of center point of region.
+
+        Returns:
+            int: Number of positions across vertical side of bounding box.
+
+        """
+        min_y = min(y for _, y in self.get_region(region_x, region_y))
+        max_y = max(y for _, y in self.get_region(region_x, region_y))
+        return max_y - min_y + 1
+
+    def get_region_width(self, region_x, region_y):
+        """Get side width of bounding box of region.
+
+        Args:
+            region_x (int): X coordinate of center point of region.
+            region_y (int): Y coordinate of center point of region.
+
+        Returns:
+            int: Number of positions across horizontal side of bounding box.
+
+        """
+        min_x = min(x for x, _ in self.get_region(region_x, region_y))
+        max_x = max(x for x, _ in self.get_region(region_x, region_y))
+        return max_x - min_x + 1
+
     def set_region_height(self, point_x, point_y, height):
         """Set uniform height of all positions within the region defined around a point.
 
