@@ -4,6 +4,7 @@ import copy
 from exceptions import *
 from terraindisplay import *
 import random
+import math
 
 
 class Terrain(object):
@@ -376,7 +377,6 @@ class VoronoiTerrain(Terrain):
         if (x, y) not in region:
             raise OutOfRegionError()
         else:
-            # TODO: linear interpolation
             self._feature_points[self._points.index(region_x, region_y)] += [(x, y)]
 
     def remove_feature_point(self, region_x, region_y, x, y):
@@ -397,3 +397,32 @@ class VoronoiTerrain(Terrain):
             raise OutOfRegionError()
         else:
             self._feature_points[self._points.index(region_x, region_y)] += [(x, y)]
+
+    def add_feature_point_factors(self, region_x, region_y, coeffs):
+        """Add value to each position in region relative to distance from each feature point times a coefficient.
+
+        Calculation is as follows:
+
+        point_height = c0*d0 + c1*d1 + c2*d2 + ... + cn*dn
+
+        for n feature points in the region. c(n) is the nth coefficient supplied,
+        and d(n) is the distance of the nth closest feature point to the supplied point.
+        (dn is divided by sqrt(region_length**2 + region_width**2), so is between 0 and 1.)
+
+        Args:
+            region_x (int): X coordinate of center point of desired region.
+            region_y (int): Y coordinate of center point of desired region.
+            coeffs (list[int]): List of all coefficients for distance to each feature point. (0th = closest, etc.)
+
+        """
+        if len(coeffs) != len(self._feature_points):
+            # TODO: raise special error
+            pass
+        else:
+            for x, y in self.get_region(region_x, region_y):
+                feat_points = self.get_feature_points(region_x, region_y)
+                for i, coeff in enumerate(coeffs):
+                    dist_to_point = (x - feat_points[i][0])**2 + (y - feat_points[i][1])**2
+                    # TODO: get width and length of region, not entire terrain
+                    dist_factor = math.sqrt(dist_to_point / (self.width**2 + self.length**2))
+                    self[x, y] += dist_factor * coeffs[i]
