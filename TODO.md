@@ -8,10 +8,6 @@
 
 * Terrain class for random height map
     * Saving and loading terrains
-    * Voronoi diagrams (subclass of Terrain)
-        * Linear interpolation of heights of points to feature points within participant regions, predefined coefficients
-            * Height of point += sum(coefficients[i]*distances_to_closest_feature_points[i] for i in range(len(coefficients)))
-            * Can choose to add on heights from feature points or not
 * Noise generation
     * Perlin noise
     * Random Voronoi diagram generation
