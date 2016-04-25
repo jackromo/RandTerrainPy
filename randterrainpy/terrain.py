@@ -446,8 +446,7 @@ class VoronoiTerrain(Terrain):
 
         """
         if len(coeffs) != len(self._feature_points):
-            # TODO: raise special error
-            pass
+            raise InvalidCoefficientCountError()
         else:
             longest_dist_in_region_squared = self.get_region_width(region_x, region_y)**2\
                                              + self.get_region_length(region_x, region_y)**2

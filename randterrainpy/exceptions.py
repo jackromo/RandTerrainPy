@@ -19,3 +19,8 @@ class HeightOutOfBoundsError(Error):
 class OutOfRegionError(Error):
     """Error raised when stating a point outside a VoronoiTerrain's region is within said region."""
     pass
+
+
+class InvalidCoefficientCountError(Error):
+    """Error raised when giving an invalid number of coefficients to add_feature_point_factors()."""
+    pass
