@@ -449,10 +449,11 @@ class VoronoiTerrain(Terrain):
             # TODO: raise special error
             pass
         else:
+            longest_dist_in_region_squared = self.get_region_width(region_x, region_y)**2\
+                                             + self.get_region_length(region_x, region_y)**2
             for x, y in self.get_region(region_x, region_y):
                 feat_points = self.get_feature_points(region_x, region_y)
                 for i, coeff in enumerate(coeffs):
-                    dist_to_point = (x - feat_points[i][0])**2 + (y - feat_points[i][1])**2
-                    # TODO: get width and length of region, not entire terrain
-                    dist_factor = math.sqrt(dist_to_point / (self.width**2 + self.length**2))
+                    dist_to_point_squared = (x - feat_points[i][0])**2 + (y - feat_points[i][1])**2
+                    dist_factor = math.sqrt(dist_to_point_squared / longest_dist_in_region_squared)
                     self[x, y] += dist_factor * coeffs[i]
