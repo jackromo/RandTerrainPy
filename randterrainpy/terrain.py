@@ -166,6 +166,40 @@ class Terrain(object):
         """
         Terrain3D(self).display_terrain()
 
+    def save_terrain(self, path, fname):
+        """Save terrain to a location, using .terr extension.
+
+        .terr extension has width and length on first line, space delimited.
+        Next lines all contain heights, with each row on a new line, and separate elements in row space delimited.
+        Each value is set to 4 decimal points, with no accidental sign from rounding errors.
+
+        Args:
+            path (str): Path to folder containing terrain.
+            fname (str): Name of file, minus extension.
+
+        """
+        # TODO
+        pass
+
+    @classmethod
+    def load_terrain(cls, path, fname):
+        """Load terrain from a .terr file.
+
+        Args:
+            path (str): Path to folder containing terrain.
+            fname (str): Name of file, minus extension.
+
+        Returns:
+            Terrain: Terrain from .terr file.
+
+        Raises:
+            InvalidPathError: Cannot get given file from path.
+            InvalidFileFormatError: File does not conform to .terr extension format.
+
+        """
+        # TODO
+        pass
+
 
 class VoronoiTerrain(Terrain):
     """A Terrain where a set of regions are defined of positions closest to certain points.
