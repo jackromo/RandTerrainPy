@@ -5,6 +5,7 @@ from exceptions import *
 from terraindisplay import *
 import random
 import math
+import os
 
 
 class Terrain(object):
@@ -178,8 +179,15 @@ class Terrain(object):
             fname (str): Name of file, minus extension.
 
         """
-        # TODO
-        pass
+        if not os.path.isdir(path):
+            # TODO: raise path error
+            pass
+        else:
+            terr_file = open(path + fname + ".terr", mode="w")
+            terr_file.write(str(self.width) + " " + str(self.length) + "\n")
+            for row in self._height_map:
+                terr_file.write(" ".join(str(round(x, 4)) for x in row) + "\n")
+            terr_file.close()
 
     @classmethod
     def load_terrain(cls, path, fname):
