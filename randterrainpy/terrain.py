@@ -178,6 +178,9 @@ class Terrain(object):
             path (str): Path to folder containing terrain.
             fname (str): Name of file, minus extension.
 
+        Raises:
+            InvalidPathError: Cannot get path.
+
         """
         if not os.path.isdir(path):
             # TODO: raise path error
@@ -194,7 +197,7 @@ class Terrain(object):
         """Load terrain from a .terr file.
 
         Args:
-            path (str): Path to folder containing terrain.
+            path (str): Path to folder containing terrain. Must end with slash.
             fname (str): Name of file, minus extension.
 
         Returns:
@@ -205,8 +208,27 @@ class Terrain(object):
             InvalidFileFormatError: File does not conform to .terr extension format.
 
         """
-        # TODO
-        pass
+        if not os.path.isdir(path + fname + ".terr"):
+            # TODO: raise InvalidPathError
+            pass
+        else:
+            terr_file = open(path + fname + ".terr", mode="r")
+            terr_file_lines = terr_file.read().split("\n")
+            terr_file.close()
+            width = int(terr_file_lines[0].split(" ")[0])
+            length = int(terr_file_lines[0].split(" ")[1])
+            if not len(terr_file_lines) == length + 1:
+                # TODO: raise InvalidFileFormatError
+                pass
+            heights = [[float(x) for x in terr_file_lines[1:][y].split(" ")] for y in range(length)]
+            if not all(len(line) == width for line in heights):
+                # TODO: raise InvalidFileFormatError
+                pass
+            terr = Terrain(width, length)
+            for y in range(length):
+                for x in range(width):
+                    terr[x, y] = heights[y][x]
+            return terr
 
 
 class VoronoiTerrain(Terrain):
