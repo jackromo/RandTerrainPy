@@ -24,3 +24,8 @@ class OutOfRegionError(Error):
 class InvalidCoefficientCountError(Error):
     """Error raised when giving an invalid number of coefficients to add_feature_point_factors()."""
     pass
+
+
+class InvalidFileFormatError(Error):
+    """Error raised when .terr file is not of valid format."""
+    pass
