@@ -6,9 +6,6 @@
 
 ## Future Features
 
-* Terrain class for random height map
-    * Saving and loading terrains
-        * Uses .terr format
 * Noise generation
     * Perlin noise
     * Random Voronoi diagram generation

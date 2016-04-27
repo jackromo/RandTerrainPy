@@ -28,6 +28,7 @@ within the main directory.
     * Basic string representation
     * 2d and 3d graphical representations
         * Uses matplotlib for 3d, top-down greyscale for 2d
+    * Saving and loading terrains (uses .terr format)
     * Voronoi diagram version of terrain (UNFINISHED)
         * Regions defined by closest positions on 2d grid to points
         * Input set of points to make regions around
