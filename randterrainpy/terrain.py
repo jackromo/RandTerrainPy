@@ -260,6 +260,7 @@ class VoronoiTerrain(Terrain):
     def _init_regions(self):
         """Initialize region map. and list of regions."""
         self._point_regions = [[] for _ in self._points]    # Reset list of regions
+        self._feature_points = [[] for _ in self._points]
         for x in range(self.width):
             for y in range(self.length):
                 min_dist = self.width**2 + self.length**2
@@ -270,7 +271,8 @@ class VoronoiTerrain(Terrain):
                         min_dist = dist_squared
                         closest_pnt_index = self._points.index(pnt)
                 self._region_map[y][x] = closest_pnt_index
-                self._point_regions[closest_pnt_index] += [(x, y)]
+                if len(self._point_regions) > 0:
+                    self._point_regions[closest_pnt_index] += [(x, y)]
 
     @property
     def points(self):
@@ -467,7 +469,7 @@ class VoronoiTerrain(Terrain):
         if (x, y) not in region:
             raise OutOfRegionError()
         else:
-            self._feature_points[self._points.index(region_x, region_y)] += [(x, y)]
+            self._feature_points[self._points.index((region_x, region_y))] += [(x, y)]
 
     def remove_feature_point(self, region_x, region_y, x, y):
         """Add a feature point to a region.
@@ -505,7 +507,7 @@ class VoronoiTerrain(Terrain):
             coeffs (list[int]): List of all coefficients for distance to each feature point. (0th = closest, etc.)
 
         """
-        if len(coeffs) != len(self._feature_points):
+        if len(coeffs) != len(self.get_feature_points(region_x, region_y)):
             raise InvalidCoefficientCountError()
         else:
             longest_dist_in_region_squared = self.get_region_width(region_x, region_y)**2\
@@ -514,5 +516,5 @@ class VoronoiTerrain(Terrain):
                 feat_points = self.get_feature_points(region_x, region_y)
                 for i, coeff in enumerate(coeffs):
                     dist_to_point_squared = (x - feat_points[i][0])**2 + (y - feat_points[i][1])**2
-                    dist_factor = math.sqrt(dist_to_point_squared / longest_dist_in_region_squared)
-                    self[x, y] += dist_factor * coeffs[i]
+                    dist_factor = math.sqrt(dist_to_point_squared / float(longest_dist_in_region_squared))
+                    self[x, y] += dist_factor * coeff
