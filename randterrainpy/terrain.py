@@ -135,7 +135,9 @@ class Terrain(object):
         for i in range(self.width):
             for j in range(self.length):
                 val = self[i, j] * other
-                result[i, j] = val if 0 < val < 1 else (0 if val < 0 else 1)
+                if not 0 <= val <= 1:
+                    raise HeightOutOfBoundsError()
+                result[i, j] = val
         return result
 
     def __str__(self):
