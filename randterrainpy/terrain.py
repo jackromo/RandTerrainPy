@@ -371,7 +371,7 @@ class VoronoiTerrain(Terrain):
         for pnt_index in range(num_points):
             made_unique_points = False
             while not made_unique_points:
-                x, y = random.randint(0, self.width), random.randint(0, self.length)
+                x, y = random.randint(0, self.width-1), random.randint(0, self.length-1)
                 if (x, y) not in self._points:
                     self._points.append((x, y))
                     made_unique_points = True
@@ -471,6 +471,8 @@ class VoronoiTerrain(Terrain):
         """
         region = self.get_region(region_x, region_y)
         if (x, y) not in region:
+            print x, y
+            print self.get_closest_point(x, y)
             raise OutOfRegionError()
         else:
             self._feature_points[self._points.index((region_x, region_y))] += [(x, y)]

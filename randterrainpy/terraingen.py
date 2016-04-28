@@ -115,13 +115,20 @@ class DiamondSquareGenerator(TerrainGenerator):
 
         """
         half_len = square_len / 2
+        # Impossible to attempt to access neighbours out of terrain bounds
         mean_height = sum([terrain[x - half_len, y - half_len],
                            terrain[x - half_len, y + half_len],
                            terrain[x + half_len, y - half_len],
                            terrain[x + half_len, y + half_len]]) / 4.0
         frequency = terrain.length / square_len
         offset = (random.random() - 0.5) * self.amp_from_freq(frequency)
-        terrain[x, y] = mean_height + offset
+        if not 0 <= mean_height + offset <= 1:
+            if mean_height + offset > 1:
+                terrain[x, y] = 1
+            else:
+                terrain[x, y] = 0
+        else:
+            terrain[x, y] = mean_height + offset
         return terrain
 
     def _update_diamond(self, terrain, x, y, diamond_len):
@@ -140,13 +147,26 @@ class DiamondSquareGenerator(TerrainGenerator):
 
         """
         half_len = diamond_len / 2
-        mean_height = sum([terrain[x, y - half_len],
-                           terrain[x + half_len, y],
-                           terrain[x, y + half_len],
-                           terrain[x - half_len, y]]) / 4.0
+        # If on edge of terrain, only access 3 neighbours to avoid leaving terrain bounds
+        neighbours = []
+        if x != 0:
+            neighbours.append(terrain[x - half_len, y])
+        if y != 0:
+            neighbours.append(terrain[x, y - half_len])
+        if x != terrain.width - 1:
+            neighbours.append(terrain[x + half_len, y])
+        if y != terrain.length - 1:
+            neighbours.append(terrain[x, y + half_len])
+        mean_height = sum(neighbours) / float(len(neighbours))
         frequency = terrain.length / diamond_len
         offset = (random.random() - 0.5) * self.amp_from_freq(frequency)
-        terrain[x, y] = mean_height + offset
+        if not 0 <= mean_height + offset <= 1:
+            if mean_height + offset > 1:
+                terrain[x, y] = 1
+            else:
+                terrain[x, y] = 0
+        else:
+            terrain[x, y] = mean_height + offset
         return terrain
 
 
