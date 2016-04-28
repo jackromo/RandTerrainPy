@@ -377,18 +377,22 @@ class VoronoiTerrain(Terrain):
                     made_unique_points = True
         self._init_regions()
 
-    def lloyd_relax(self):
+    def lloyd_relax(self, iters=1):
         """Perform iteration of Lloyd relaxation on center points.
 
         This involves points being moved to the centroids of their regions,
         making regions more uniformly distributed.
 
+        Args:
+            iters (int): Number of iterations of Lloyd relaxation to do in sequence.
+
         """
-        for point_index, region_points in enumerate(self._point_regions):
-            centroid_x = sum(pnt[0] for pnt in region_points) / len(region_points)
-            centroid_y = sum(pnt[1] for pnt in region_points) / len(region_points)
-            self._points[point_index] = (centroid_x, centroid_y)
-        self._init_regions()
+        for _ in range(iters):
+            for point_index, region_points in enumerate(self._point_regions):
+                centroid_x = sum(pnt[0] for pnt in region_points) / len(region_points)
+                centroid_y = sum(pnt[1] for pnt in region_points) / len(region_points)
+                self._points[point_index] = (centroid_x, centroid_y)
+            self._init_regions()
 
     def get_region_edge(self, region_x, region_y):
         """Get list of all positions on edge of region contained within it.
