@@ -6,6 +6,8 @@
 
 ## Future Features
 
+* VoronoiTerrain
+    * Save and load VoronoiTerrain (override methods of Terrain)
 * Noise generation
     * Perlin noise
     * Random Voronoi diagram generation
