@@ -525,7 +525,7 @@ class VoronoiTerrain(Terrain):
                 feat_points = self.get_feature_points(region_x, region_y)
                 sorted_pnts = sorted(feat_points, key=lambda p: (x - p[0])**2 + (y - p[1])**2)
                 for (feat_x, feat_y), coeff in zip(sorted_pnts, coeffs):
-                    if x != feat_x and y != feat_y:     # distance factor is 0 at feature point, don't bother
+                    if x != feat_x or y != feat_y:     # distance factor is 0 at feature point, don't bother
                         dist_to_point_squared = (x - feat_x)**2 + (y - feat_y)**2
                         # get distance in same direction to edge of region
                         feat_to_pnt_len = math.sqrt((x - feat_x)**2 + (y - feat_y)**2)
@@ -559,3 +559,10 @@ class VoronoiTerrain(Terrain):
         chosen_feat_points = [pnts[i] for i in chosen_indices]
         for x, y in chosen_feat_points:
             self.add_feature_point(region_x, region_y, x, y)
+
+    def save_terrain(self, path, fname):
+        pass
+
+    @classmethod
+    def load_terrain(cls, path, fname):
+        pass
