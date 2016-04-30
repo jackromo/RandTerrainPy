@@ -518,15 +518,29 @@ class VoronoiTerrain(Terrain):
         if len(coeffs) != len(self.get_feature_points(region_x, region_y)):
             raise InvalidCoefficientCountError()
         else:
-            longest_dist_in_region_squared = self.get_region_width(region_x, region_y)**2\
-                                             + self.get_region_length(region_x, region_y)**2
             for x, y in self.get_region(region_x, region_y):
                 feat_points = self.get_feature_points(region_x, region_y)
                 sorted_pnts = sorted(feat_points, key=lambda p: (x - p[0])**2 + (y - p[1])**2)
-                for i, coeff in enumerate(coeffs):
-                    dist_to_point_squared = (x - sorted_pnts[i][0])**2 + (y - sorted_pnts[i][1])**2
-                    dist_factor = math.sqrt(dist_to_point_squared / float(longest_dist_in_region_squared))
-                    self[x, y] += dist_factor * coeff
+                for (feat_x, feat_y), coeff in zip(sorted_pnts, coeffs):
+                    if x != feat_x and y != feat_y:     # distance factor is 0 at feature point, don't bother
+                        dist_to_point_squared = (x - feat_x)**2 + (y - feat_y)**2
+                        # get distance in same direction to edge of region
+                        feat_to_pnt_len = math.sqrt((x - feat_x)**2 + (y - feat_y)**2)
+                        x_diff = (x - feat_x) / float(feat_to_pnt_len)
+                        y_diff = (y - feat_y) / float(feat_to_pnt_len)
+                        temp_x = x
+                        temp_y = y
+                        # move in same dir as feat pnt => (x, y) until at edge of region / edge of terrain
+                        # once there, distance to reached point from feat pnt = dist to edge of region
+                        while self._points[self.get_closest_point(int(temp_x), int(temp_y))] == (region_x, region_y):
+                            temp_x += x_diff
+                            temp_y += y_diff
+                            if not ((0 <= temp_x < self.width) and (0 <= temp_y < self.length)):
+                                break
+                        dist_to_edge_squared = (temp_x + x_diff - feat_x)**2 + (temp_y + y_diff - feat_y)**2
+                        # divide distance to point by distance to edge to ensure 0 <= height <= 1
+                        dist_factor = math.sqrt(dist_to_point_squared / float(dist_to_edge_squared))
+                        self[x, y] += dist_factor * coeff
 
     def add_random_feature_points(self, region_x, region_y, num_points):
         """Add a set number of randomly placed feature points in a region.
