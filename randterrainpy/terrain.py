@@ -522,7 +522,23 @@ class VoronoiTerrain(Terrain):
                                              + self.get_region_length(region_x, region_y)**2
             for x, y in self.get_region(region_x, region_y):
                 feat_points = self.get_feature_points(region_x, region_y)
+                sorted_pnts = sorted(feat_points, key=lambda p: (x - p[0])**2 + (y - p[1])**2)
                 for i, coeff in enumerate(coeffs):
-                    dist_to_point_squared = (x - feat_points[i][0])**2 + (y - feat_points[i][1])**2
+                    dist_to_point_squared = (x - sorted_pnts[i][0])**2 + (y - sorted_pnts[i][1])**2
                     dist_factor = math.sqrt(dist_to_point_squared / float(longest_dist_in_region_squared))
                     self[x, y] += dist_factor * coeff
+
+    def add_random_feature_points(self, region_x, region_y, num_points):
+        """Add a set number of randomly placed feature points in a region.
+
+        Args:
+            region_x (int): X coordinate of center point of desired region.
+            region_y (int): Y coordinate of center point of desired region.
+            num_points (int): Number of feature points to create.
+
+        """
+        pnts = self.get_region(region_x, region_y)
+        chosen_indices = random.sample(range(0, len(pnts)), num_points)
+        chosen_feat_points = [pnts[i] for i in chosen_indices]
+        for x, y in chosen_feat_points:
+            self.add_feature_point(region_x, region_y, x, y)
