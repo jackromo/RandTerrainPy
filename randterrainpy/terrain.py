@@ -177,7 +177,7 @@ class Terrain(object):
         Each value is set to 4 decimal points, with no accidental sign from rounding errors.
 
         Args:
-            path (str): Path to folder containing terrain.
+            path (str): Path to folder containing terrain. Must end with slash.
             fname (str): Name of file, minus extension.
 
         Raises:
@@ -561,8 +561,50 @@ class VoronoiTerrain(Terrain):
             self.add_feature_point(region_x, region_y, x, y)
 
     def save_terrain(self, path, fname):
-        pass
+        """Save terrain to a location, using .vterr extension.
+
+        .terr extension has width, length, and number of regions on first line, space delimited.
+        Next lines all contain heights, with each row on a new line, and separate elements in row space delimited.
+        Each value is set to 4 decimal points, with no accidental sign from rounding errors.
+        After this, each region center is on a separate line, with x and y coordinates space delimited.
+        On each region's line, a series of feature point x-y coordinates for said region are space delimited.
+
+        Args:
+            path (str): Path to folder containing terrain. Must end with slash.
+            fname (str): Name of file, minus extension.
+
+        Raises:
+            IOError: Cannot get path.
+
+        """
+        if not os.path.isdir(path):
+            raise IOError()
+        else:
+            terr_file = open(path + fname + ".vterr", mode="w")
+            terr_file.write(str(self.width) + " " + str(self.length) + " " + str(len(self._points)) + "\n")
+            for row in self._height_map:
+                terr_file.write(" ".join(str(round(x, 4)) for x in row) + "\n")
+            for x, y in self._points:
+                terr_file.write(str(x) + " " + str(y))
+                for feat_x, feat_y in self.get_feature_points(x, y):
+                    terr_file.write(" " + str(feat_x) + " " + str(feat_y))
+                terr_file.write("\n")
+            terr_file.close()
 
     @classmethod
     def load_terrain(cls, path, fname):
+        """Load voronoi terrain from a .vterr file.
+
+        Args:
+            path (str): Path to folder containing terrain. Must end with slash.
+            fname (str): Name of file, minus extension.
+
+        Returns:
+            VoronoiTerrain: VoronoiTerrain from .vterr file.
+
+        Raises:
+            IOError: Cannot get given file from path.
+            InvalidFileFormatError: File does not conform to .terr extension format.
+
+        """
         pass
