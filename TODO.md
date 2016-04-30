@@ -14,6 +14,9 @@
         * Random seed points for regions, give mean / std.dev
         * Random feature points w/ random or preset heights
             * If random, can decide on an interval, mean and std.dev
+    * Erosion algorithms
+        * Thermal erosion
+        * Hydraulic erosion
 * Demo applications
     * Handwritten lines (variance in line from noise function)
     * Cloud generator
