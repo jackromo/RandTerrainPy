@@ -514,6 +514,9 @@ class VoronoiTerrain(Terrain):
             region_y (int): Y coordinate of center point of desired region.
             coeffs (list[int]): List of all coefficients for distance to each feature point. (0th = closest, etc.)
 
+        References:
+            Realtime Procedural Terrain Generation: Jacob Olsen [http://web.mit.edu/cesium/Public/terrain.pdf]
+
         """
         if len(coeffs) != len(self.get_feature_points(region_x, region_y)):
             raise InvalidCoefficientCountError()
