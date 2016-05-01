@@ -607,4 +607,31 @@ class VoronoiTerrain(Terrain):
             InvalidFileFormatError: File does not conform to .terr extension format.
 
         """
-        pass
+        if not os.path.isdir(path + fname + ".vterr"):
+            raise IOError()
+        else:
+            terr_file = open(path + fname + ".vterr", mode="r")
+            terr_file_lines = terr_file.read().split("\n")
+            terr_file.close()
+            width = int(terr_file_lines[0].split(" ")[0])
+            length = int(terr_file_lines[0].split(" ")[1])
+            num_regions = int(terr_file_lines[0].split(" ")[2])
+            if not len(terr_file_lines) == 1 + length + num_regions:
+                raise InvalidFileFormatError()
+            heights = [[float(x) for x in terr_file_lines[1:length][y].split(" ")] for y in range(length)]
+            if not all(len(line) == width for line in heights):
+                raise InvalidFileFormatError()
+            region_lines = [line.split(" ") for line in terr_file_lines[length:]]
+            points = []
+            feat_points = []
+            for line in region_lines:
+                points.append((int(line[0]), int(line[1])))
+                feat_points.append([(int(line[i]), int(line[i+1])) for i in range(2, len(line), 2)])
+            terr = VoronoiTerrain(width, length, points)
+            for y in range(length):
+                for x in range(width):
+                    terr[x, y] = heights[y][x]
+            for i, (x, y) in enumerate(points):
+                for feat_x, feat_y in feat_points[i]:
+                    terr.add_feature_point(x, y, feat_x, feat_y)
+            return terr
