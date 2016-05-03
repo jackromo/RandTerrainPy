@@ -473,8 +473,6 @@ class VoronoiTerrain(Terrain):
         """
         region = self.get_region(region_x, region_y)
         if (x, y) not in region:
-            print x, y
-            print self.get_closest_point(x, y)
             raise OutOfRegionError()
         else:
             self._feature_points[self._points.index((region_x, region_y))] += [(x, y)]

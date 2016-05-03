@@ -49,7 +49,7 @@ class DiamondSquareGenerator(TerrainGenerator):
         """
         side_len = (2 ** side_exp) + 1
         ter = Terrain(side_len, side_len)
-        return self._divide(self._initialize_corners(ter, 0.5), side_len)
+        return self._divide(self._initialize_corners(ter, 0.5), side_len-1)
 
     def _initialize_corners(self, terrain, init_val):
         """Initialize corner values of terrain.
