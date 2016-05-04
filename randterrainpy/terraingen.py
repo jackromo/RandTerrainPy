@@ -203,3 +203,24 @@ class VioletNoiseGenerator(DiamondSquareGenerator):
 
     def __new__(cls, *args, **kwargs):
         return DiamondSquareGenerator(lambda f: f ** 2)
+
+
+class PerlinGenerator(TerrainGenerator):
+    """Terrain generator that uses Perlin noise algorithm."""
+
+    def __init__(self, square_len, width_in_squares, length_in_squares):
+        """
+
+        Args:
+            square_len (int): Length of one side of a square in Perlin noise grid. Is > 0.
+            width_in_squares (int): Width of generated terrain in grid squares. Is > 0.
+            length_in_squares (int): Length of generated terrain in grid squares. Is > 0.
+
+        """
+        self._square_len = square_len
+        self._width_in_squares = width_in_squares
+        self._length_in_squares = length_in_squares
+        self.terr = Terrain(square_len * self._width_in_squares, square_len * self._length_in_squares)
+
+    def __call__(self, *args, **kwargs):
+        pass
