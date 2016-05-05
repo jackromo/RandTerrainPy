@@ -8,6 +8,8 @@
 
 * Noise generation
     * Perlin noise
+        * Choice of grid size
+        * Allow altering of smoothing function
     * Random Voronoi diagram generation
         * Random seed points for regions, give mean / std.dev
         * Random feature points w/ random or preset heights
