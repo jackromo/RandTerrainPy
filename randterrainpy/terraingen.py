@@ -222,5 +222,19 @@ class PerlinGenerator(TerrainGenerator):
         self._length_in_squares = length_in_squares
         self.terr = Terrain(square_len * self._width_in_squares, square_len * self._length_in_squares)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, interp_func=None):
+        """Generate terrain via Perlin noise.
+
+        Does this by choosing a random gradient vector for each grid corner
+        and taking their dot products with the displacement vectors to each point in the grid.
+        The generated values are added onto each point within each grid square,
+        and then interpolated between.
+
+        Args:
+            interp_func (function): Function to specify linear interpolation.
+
+        Returns:
+            Terrain: Generated terrain.
+
+        """
         pass
