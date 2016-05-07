@@ -3,6 +3,7 @@
 from terrain import Terrain
 import random
 import abc
+import math
 
 
 class TerrainGenerator(object):
@@ -221,6 +222,21 @@ class PerlinGenerator(TerrainGenerator):
         self._width_in_squares = width_in_squares
         self._length_in_squares = length_in_squares
         self.terr = Terrain(square_len * self._width_in_squares, square_len * self._length_in_squares)
+
+    def _init_gradients(self, vec_magnitude):
+        """Initialize all gradient vectors.
+
+        Args:
+            vec_magnitude (float): Magnitude of all gradient vectors.
+
+        """
+        self._grad_vecs = [[(0, 0) for _ in range(self._width_in_squares)] for _ in range(self._length_in_squares)]
+        """list[list[tuple(float, float)]]: Grid of gradient vectors."""
+        for x in range(self._width_in_squares):
+            for y in range(self._length_in_squares):
+                x_val = random.random() * vec_magnitude
+                y_val = math.sqrt(vec_magnitude**2 - x_val**2)
+                self._grad_vecs[y][x] = (x_val, y_val)
 
     def __call__(self, interp_func=None):
         """Generate terrain via Perlin noise.
