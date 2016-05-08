@@ -221,7 +221,7 @@ class PerlinGenerator(TerrainGenerator):
         self._square_len = square_len
         self._width_in_squares = width_in_squares
         self._length_in_squares = length_in_squares
-        self.terr = Terrain(square_len * self._width_in_squares, square_len * self._length_in_squares)
+        self._init_gradients(1)     # TODO: choose proper vector magnitude
 
     def _init_gradients(self, vec_magnitude):
         """Initialize all gradient vectors.
@@ -241,7 +241,7 @@ class PerlinGenerator(TerrainGenerator):
     def __call__(self, interp_func=None):
         """Generate terrain via Perlin noise.
 
-        Does this by choosing a random gradient vector for each grid corner
+        Does this by choosing a random gradient vector for each grid corner (done at initialization)
         and taking their dot products with the displacement vectors to each point in the grid.
         The generated values are added onto each point within each grid square,
         and then interpolated between.
@@ -251,6 +251,56 @@ class PerlinGenerator(TerrainGenerator):
 
         Returns:
             Terrain: Generated terrain.
+
+        """
+        terr = Terrain(self._square_len * self._width_in_squares,
+                       self._square_len * self._length_in_squares)
+        for x in range(terr.width):
+            for y in range(terr.length):
+                terr[x, y] = self._get_noise_at(x, y)
+        return terr
+
+    def _get_noise_at(self, x, y):
+        """Get perlin noise at a point in terrain.
+
+        Args:
+            x (int): X coordinate of requested point.
+            y (int): Y coordinate of requested point.
+
+        Returns:
+            float: Height of point on terrain, between 0 and 1 inclusive.
+
+        """
+        pass
+
+    def _get_influence_val(self, vec_x, vec_y, x, y):
+        """Get influence value from a corner on grid for a point.
+
+        This value is the dot product of the displacement and gradient vectors at that corner.
+        Four of these for all four corners surrounding a point will be interpolated between to get the point's height.
+
+        Args:
+            vec_x (int): X coordinate of corner to get gradient and displacement vectors from.
+            vec_y (int): Y coordinate of corner to get gradient and displacement vectors from.
+            x (int): X coordinate of point to get influence value for.
+            y (int): Y coordinate of point to get influence value for.
+
+        Returns:
+            float: Influence value of corner (vec_x, vec_y) for point (x, y).
+
+        """
+        pass
+
+    def _interpolate_between(self, val0, val1, weight):
+        """Linearly interpolate between two values given a weight.
+
+        Args:
+            val0 (float): First value to interpolate from.
+            val1 (float): Second value to interpolate from.
+            weight (float): Weighting of interpolation. Is between 0 and 1; 0 means == val0, 1 means == val1.
+
+        Returns:
+            float: Result of interpolation between val0 and val1.
 
         """
         pass
