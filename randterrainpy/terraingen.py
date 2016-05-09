@@ -234,11 +234,11 @@ class PerlinGenerator(TerrainGenerator):
         """list[list[tuple(float, float)]]: Grid of gradient vectors."""
         for x in range(self._width_in_squares):
             for y in range(self._length_in_squares):
-                x_val = random.random() * vec_magnitude
+                x_val = (random.random() - 0.5) * 2 * vec_magnitude
                 y_val = math.sqrt(vec_magnitude**2 - x_val**2)
                 self._grad_vecs[y][x] = (x_val, y_val)
 
-    def __call__(self, interp_func=None):
+    def __call__(self):
         """Generate terrain via Perlin noise.
 
         Does this by choosing a random gradient vector for each grid corner (done at initialization)
@@ -246,15 +246,12 @@ class PerlinGenerator(TerrainGenerator):
         The generated values are added onto each point within each grid square,
         and then interpolated between.
 
-        Args:
-            interp_func (function): Function to specify linear interpolation.
-
         Returns:
             Terrain: Generated terrain.
 
         """
-        terr = Terrain(self._square_len * self._width_in_squares,
-                       self._square_len * self._length_in_squares)
+        terr = Terrain(self._square_len * (self._width_in_squares - 1),
+                       self._square_len * (self._length_in_squares - 1))
         for x in range(terr.width):
             for y in range(terr.length):
                 terr[x, y] = self._get_noise_at(x, y)
@@ -273,8 +270,7 @@ class PerlinGenerator(TerrainGenerator):
         """
         grid_x = x / float(self._square_len)    # X value within grid of gradient vectors
         grid_y = y / float(self._square_len)    # Y value within grid of gradient vectors
-        left_x, right_x = int(x), int(x) + 1
-        upper_y, lower_y = int(y), int(y) + 1
+        left_x, right_x, upper_y, lower_y = self._get_corners(grid_x, grid_y)
         x_weight = grid_x - left_x
         y_weight = grid_y - upper_y
         # ul = upper left, lr = lower right, etc.
@@ -287,8 +283,27 @@ class PerlinGenerator(TerrainGenerator):
         lower_influence_val = self._interpolate_between(ll_influence_val, lr_influence_val, x_weight)
         interpolated_val = self._interpolate_between(upper_influence_val, lower_influence_val, y_weight)
         # Normalize interpolated_val to be between 0 and 1, return as height
-        # Can range from 1 to -1, add 1 and divide by 2
-        return (interpolated_val + 1) / 2.0
+        # Can range from 0.5 to -0.5, add 0.5 to achieve proper result
+        height = interpolated_val + 0.5
+        # Some margin of error, ensure is still between 0 and 1
+        return round(height) if not 0 <= height <= 1 else height
+
+    def _get_corners(self, x, y):
+        """Get coordinates of corners around point in gradients grid.
+
+        Args:
+            x (float): X coordinate of point in gradient grid.
+            y (float): Y coordinate of point in gradient grid.
+
+        Returns:
+            tuple(int, int, int, int): Tuple of left x, right x, upper y and lower y.
+
+        """
+        left_x = (int(x)-1) if x == self._width_in_squares else int(x)
+        right_x = int(x) if x == self._width_in_squares else (int(x) + 1)
+        upper_y = (int(y)-1) if x == self._length_in_squares else int(y)
+        lower_y = int(y) if y == self._length_in_squares else (int(y) + 1)
+        return left_x, right_x, upper_y, lower_y
 
     def _get_influence_val(self, vec_x, vec_y, x, y):
         """Get influence value from a corner on grid for a point.
