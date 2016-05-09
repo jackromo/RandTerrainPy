@@ -221,10 +221,10 @@ class PerlinGenerator(TerrainGenerator):
         self._square_len = square_len
         self._width_in_squares = width_in_squares
         self._length_in_squares = length_in_squares
-        self._init_gradients(1)     # TODO: choose proper vector magnitude
+        self._init_gradients(1)
 
     def _init_gradients(self, vec_magnitude):
-        """Initialize all gradient vectors.
+        """Initialize all gradient vectors to be in random directions with the same magnitude.
 
         Args:
             vec_magnitude (float): Magnitude of all gradient vectors.
@@ -271,7 +271,24 @@ class PerlinGenerator(TerrainGenerator):
             float: Height of point on terrain, between 0 and 1 inclusive.
 
         """
-        pass
+        grid_x = x / float(self._square_len)    # X value within grid of gradient vectors
+        grid_y = y / float(self._square_len)    # Y value within grid of gradient vectors
+        left_x, right_x = int(x), int(x) + 1
+        upper_y, lower_y = int(y), int(y) + 1
+        x_weight = grid_x - left_x
+        y_weight = grid_y - upper_y
+        # ul = upper left, lr = lower right, etc.
+        ul_influence_val = self._get_influence_val(left_x, upper_y, grid_x, grid_y)
+        ur_influence_val = self._get_influence_val(right_x, upper_y, grid_x, grid_y)
+        ll_influence_val = self._get_influence_val(left_x, lower_y, grid_x, grid_y)
+        lr_influence_val = self._get_influence_val(right_x, lower_y, grid_x, grid_y)
+        # Interpolate between top two and bottom two influence vals, then interpolate between them using y_weight
+        upper_influence_val = self._interpolate_between(ul_influence_val, ur_influence_val, x_weight)
+        lower_influence_val = self._interpolate_between(ll_influence_val, lr_influence_val, x_weight)
+        interpolated_val = self._interpolate_between(upper_influence_val, lower_influence_val, y_weight)
+        # Normalize interpolated_val to be between 0 and 1, return as height
+        # Can range from 1 to -1, add 1 and divide by 2
+        return (interpolated_val + 1) / 2.0
 
     def _get_influence_val(self, vec_x, vec_y, x, y):
         """Get influence value from a corner on grid for a point.
@@ -282,8 +299,8 @@ class PerlinGenerator(TerrainGenerator):
         Args:
             vec_x (int): X coordinate of corner to get gradient and displacement vectors from.
             vec_y (int): Y coordinate of corner to get gradient and displacement vectors from.
-            x (int): X coordinate of point to get influence value for.
-            y (int): Y coordinate of point to get influence value for.
+            x (float): X coordinate of point to get influence value for, normalized to be within gradients grid.
+            y (float): Y coordinate of point to get influence value for, normalized to be within gradients grid.
 
         Returns:
             float: Influence value of corner (vec_x, vec_y) for point (x, y).
@@ -291,7 +308,8 @@ class PerlinGenerator(TerrainGenerator):
         """
         pass
 
-    def _interpolate_between(self, val0, val1, weight):
+    @staticmethod
+    def _interpolate_between(val0, val1, weight):
         """Linearly interpolate between two values given a weight.
 
         Args:
