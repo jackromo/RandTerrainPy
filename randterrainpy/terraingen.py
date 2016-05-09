@@ -306,7 +306,10 @@ class PerlinGenerator(TerrainGenerator):
             float: Influence value of corner (vec_x, vec_y) for point (x, y).
 
         """
-        pass
+        disp_x = x - vec_x
+        disp_y = y - vec_y
+        grad_x, grad_y = self._grad_vecs[vec_y][vec_x]
+        return grad_x*disp_x + grad_y*disp_y
 
     @staticmethod
     def _interpolate_between(val0, val1, weight):
@@ -321,4 +324,4 @@ class PerlinGenerator(TerrainGenerator):
             float: Result of interpolation between val0 and val1.
 
         """
-        pass
+        return (1 - weight)*val0 + weight*val1
