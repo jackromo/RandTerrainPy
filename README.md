@@ -42,3 +42,7 @@ within the main directory.
     * Diamond square algorithm
         * Takes noise color function (from frequency to amplitude)
         * Red, pink, white, blue, and violet preset noises
+    * Perlin noise
+        * Choice of grid size and size of grid squares
+        * Choice of linear or cubic smoothing
+    * Random Voronoi diagram (see above)
