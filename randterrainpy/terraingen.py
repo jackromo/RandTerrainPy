@@ -221,6 +221,7 @@ class PerlinGenerator(TerrainGenerator):
         self._square_len = square_len
         self._width_in_squares = width_in_squares
         self._length_in_squares = length_in_squares
+        self._linearly_interpolated = False
         self._init_gradients(1)
 
     def _init_gradients(self, vec_magnitude):
@@ -235,21 +236,21 @@ class PerlinGenerator(TerrainGenerator):
         for x in range(self._width_in_squares):
             for y in range(self._length_in_squares):
                 x_val = (random.random() - 0.5) * 2 * vec_magnitude
-                y_val = math.sqrt(vec_magnitude**2 - x_val**2)
+                y_val = math.sqrt(vec_magnitude**2 - x_val**2)  # TODO: make this possible to be negative
                 self._grad_vecs[y][x] = (x_val, y_val)
 
-    def __call__(self):
+    def __call__(self, linearly_interpolated=False):
         """Generate terrain via Perlin noise.
 
-        Does this by choosing a random gradient vector for each grid corner (done at initialization)
-        and taking their dot products with the displacement vectors to each point in the grid.
-        The generated values are added onto each point within each grid square,
-        and then interpolated between.
+        Args:
+            linearly_interpolated (bool): Whether to linearly interpolate values or use cubic function.
 
         Returns:
             Terrain: Generated terrain.
 
         """
+        self._linearly_interpolated = bool(linearly_interpolated)
+        print self._linearly_interpolated
         terr = Terrain(self._square_len * (self._width_in_squares - 1),
                        self._square_len * (self._length_in_squares - 1))
         for x in range(terr.width):
@@ -259,6 +260,10 @@ class PerlinGenerator(TerrainGenerator):
 
     def _get_noise_at(self, x, y):
         """Get perlin noise at a point in terrain.
+
+        Does this by choosing a random gradient vector for each grid corner (done at initialization)
+        and taking their dot products with the displacement vectors to each point in the grid.
+        The generated values are then interpolated between based on distance to each corner from the desired point.
 
         Args:
             x (int): X coordinate of requested point.
@@ -301,7 +306,7 @@ class PerlinGenerator(TerrainGenerator):
         """
         left_x = (int(x)-1) if x == self._width_in_squares else int(x)
         right_x = int(x) if x == self._width_in_squares else (int(x) + 1)
-        upper_y = (int(y)-1) if x == self._length_in_squares else int(y)
+        upper_y = (int(y)-1) if y == self._length_in_squares else int(y)
         lower_y = int(y) if y == self._length_in_squares else (int(y) + 1)
         return left_x, right_x, upper_y, lower_y
 
@@ -326,9 +331,10 @@ class PerlinGenerator(TerrainGenerator):
         grad_x, grad_y = self._grad_vecs[vec_y][vec_x]
         return grad_x*disp_x + grad_y*disp_y
 
-    @staticmethod
-    def _interpolate_between(val0, val1, weight):
-        """Linearly interpolate between two values given a weight.
+    def _interpolate_between(self, val0, val1, weight):
+        """Interpolate between two values given a weight.
+
+        Will be linear if self._linearly_interpolated is True, or via a smooth function otherwise.
 
         Args:
             val0 (float): First value to interpolate from.
@@ -339,4 +345,11 @@ class PerlinGenerator(TerrainGenerator):
             float: Result of interpolation between val0 and val1.
 
         """
-        return (1 - weight)*val0 + weight*val1
+        if self._linearly_interpolated:
+            return (1 - weight)*val0 + weight*val1
+        else:
+            return self._smoothen_weight(1 - weight)*val0 + self._smoothen_weight(weight)*val1
+
+    @staticmethod
+    def _smoothen_weight(x):
+        return 6*(x**5) - 15*(x**4) + 10*(x**3)
