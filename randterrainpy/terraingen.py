@@ -231,10 +231,10 @@ class PerlinGenerator(TerrainGenerator):
             vec_magnitude (float): Magnitude of all gradient vectors.
 
         """
-        self._grad_vecs = [[(0, 0) for _ in range(self._width_in_squares)] for _ in range(self._length_in_squares)]
+        self._grad_vecs = [[(0, 0) for _ in range(self._width_in_squares+1)] for _ in range(self._length_in_squares+1)]
         """list[list[tuple(float, float)]]: Grid of gradient vectors."""
-        for x in range(self._width_in_squares):
-            for y in range(self._length_in_squares):
+        for x in range(self._width_in_squares+1):
+            for y in range(self._length_in_squares+1):
                 x_val = (random.random() - 0.5) * 2 * vec_magnitude
                 y_val = math.sqrt(vec_magnitude**2 - x_val**2) * random.choice([1, -1])
                 self._grad_vecs[y][x] = (x_val, y_val)
@@ -250,9 +250,8 @@ class PerlinGenerator(TerrainGenerator):
 
         """
         self._linearly_interpolated = bool(linearly_interpolated)
-        print self._linearly_interpolated
-        terr = Terrain(self._square_len * (self._width_in_squares - 1),
-                       self._square_len * (self._length_in_squares - 1))
+        terr = Terrain(self._square_len * self._width_in_squares,
+                       self._square_len * self._length_in_squares)
         for x in range(terr.width):
             for y in range(terr.length):
                 terr[x, y] = self._get_noise_at(x, y)
