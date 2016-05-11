@@ -236,7 +236,7 @@ class PerlinGenerator(TerrainGenerator):
         for x in range(self._width_in_squares):
             for y in range(self._length_in_squares):
                 x_val = (random.random() - 0.5) * 2 * vec_magnitude
-                y_val = math.sqrt(vec_magnitude**2 - x_val**2)  # TODO: make this possible to be negative
+                y_val = math.sqrt(vec_magnitude**2 - x_val**2) * random.choice([1, -1])
                 self._grad_vecs[y][x] = (x_val, y_val)
 
     def __call__(self, linearly_interpolated=False):
