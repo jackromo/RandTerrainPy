@@ -8,10 +8,10 @@
 
 * Noise generation
     * Random Voronoi diagram generation
-        * Random seed points for regions, give mean / std.dev
         * Random feature points w/ random or preset heights
             * If random, can decide on an interval, mean and std.dev
     * Erosion algorithms
+        * Implement as methods of Terrain
         * Thermal erosion
         * Hydraulic erosion
 * Demo applications
@@ -23,3 +23,6 @@
             * Sea, shore, valley, mountain, etc.
     * Continuous procedural terrain generation (generated on the fly)
         * Use DiamondSquare on square regions, copy over adjacent region's edge to influence next area's generation
+        * Land, trees, water, clouds
+        * Biomes
+    * Bubble textures
