@@ -3,6 +3,7 @@
 ## General
 
 * Tests for TerrainGenerator, DiamondSquareGenerator and Terrain2D/3D
+* Optimize all methods to use GPU parallelism when iterating over all points
 
 ## Future Features
 
