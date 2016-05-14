@@ -228,6 +228,16 @@ class Terrain(object):
                     terr[x, y] = heights[y][x]
             return terr
 
+    def thermal_erode(self):
+        """Perform one iteration of thermal erosion upon self.
+        """
+        pass
+
+    def hydraulic_erode(self):
+        """Perform one iteration of hydraulic erosion upon self.
+        """
+        pass
+
 
 class VoronoiTerrain(Terrain):
     """A Terrain where a set of regions are defined of positions closest to certain points.
