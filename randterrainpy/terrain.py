@@ -241,16 +241,30 @@ class Terrain(object):
             tuple(float, float, float, float): Heights of upper, lower, left and right neighbours in order.
 
         """
-        neighbours = []
-        if x != 0:
-            neighbours.append((x-1, y))
-        if y != 0:
-            neighbours.append((x, y-1))
-        if x != self.width:
-            neighbours.append((x+1, y))
-        if y != self.length:
-            neighbours.append((x, y+1))
-        return neighbours
+        neighbours = [(x, y+1), (x-1, y), (x+1, y), (x, y-1)]
+        filtered_neighbours = [self[px, py] for (px, py) in neighbours
+                               if 0 <= px < self.width and 0 <= py < self.length]
+        return filtered_neighbours
+
+    def get_moore_neighbours(self, x, y):
+        """Get Moore neighbours of point x, y.
+
+        Neighbours are nine points directly adjacent to sides and diagonals of given point.
+
+        Args:
+            x (int): X coordinate of input point.
+            x (int): Y coordinate of input point.
+
+        Returns:
+            tuple(floats * 9): Nine heights: upper, up right, right, low right, low, low left, left, up left, in order.
+
+        """
+        neighbours = [(x-1, y+1), (x, y+1), (x+1, y+1),
+                      (x-1, y), (x+1, y),
+                      (x-1, y-1), (x, y-1), (x+1, y-1)]
+        filtered_neighbours = [self[px, py] for (px, py) in neighbours
+                               if 0 <= px < self.width and 0 <= py < self.length]
+        return filtered_neighbours
 
     def thermal_erode(self):
         """Perform one iteration of thermal erosion upon self.
