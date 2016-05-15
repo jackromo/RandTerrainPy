@@ -228,6 +228,30 @@ class Terrain(object):
                     terr[x, y] = heights[y][x]
             return terr
 
+    def get_vonneumann_neighbours(self, x, y):
+        """Get Von Neumann neighbours of point x, y.
+
+        Neighbours are points one above, one below, one to left, and one to right.
+
+        Args:
+            x (int): X coordinate of input point.
+            x (int): Y coordinate of input point.
+
+        Returns:
+            tuple(float, float, float, float): Heights of upper, lower, left and right neighbours in order.
+
+        """
+        neighbours = []
+        if x != 0:
+            neighbours.append((x-1, y))
+        if y != 0:
+            neighbours.append((x, y-1))
+        if x != self.width:
+            neighbours.append((x+1, y))
+        if y != self.length:
+            neighbours.append((x, y+1))
+        return neighbours
+
     def thermal_erode(self):
         """Perform one iteration of thermal erosion upon self.
         """
