@@ -266,13 +266,21 @@ class Terrain(object):
                                if 0 <= px < self.width and 0 <= py < self.length]
         return filtered_neighbours
 
-    def thermal_erode(self):
+    def thermal_erode(self, iterations=1):
         """Perform one iteration of thermal erosion upon self.
+
+        Args:
+            iterations (int): Number of times to do thermal erosion.
+
         """
         pass
 
-    def hydraulic_erode(self):
+    def hydraulic_erode(self, iterations=1):
         """Perform one iteration of hydraulic erosion upon self.
+
+        Args:
+            iterations(int): Number of times to do hydraulic erosion.
+
         """
         pass
 
