@@ -238,11 +238,11 @@ class Terrain(object):
             x (int): Y coordinate of input point.
 
         Returns:
-            tuple(float, float, float, float): Heights of upper, lower, left and right neighbours in order.
+            tuple(tuple(int, int) * 4): Coordinates of upper, lower, left and right neighbours in order.
 
         """
         neighbours = [(x, y+1), (x-1, y), (x+1, y), (x, y-1)]
-        filtered_neighbours = [self[px, py] for (px, py) in neighbours
+        filtered_neighbours = [(px, py) for (px, py) in neighbours
                                if 0 <= px < self.width and 0 <= py < self.length]
         return filtered_neighbours
 
@@ -256,13 +256,13 @@ class Terrain(object):
             x (int): Y coordinate of input point.
 
         Returns:
-            tuple(floats * 9): Nine heights: upper, up right, right, low right, low, low left, left, up left, in order.
+            tuple(tuple(int, int) * 9): upper, up right, right, low right, low, low left, left, up left, in order.
 
         """
         neighbours = [(x-1, y+1), (x, y+1), (x+1, y+1),
                       (x-1, y), (x+1, y),
                       (x-1, y-1), (x, y-1), (x+1, y-1)]
-        filtered_neighbours = [self[px, py] for (px, py) in neighbours
+        filtered_neighbours = [(px, py) for (px, py) in neighbours
                                if 0 <= px < self.width and 0 <= py < self.length]
         return filtered_neighbours
 
