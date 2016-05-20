@@ -266,18 +266,33 @@ class Terrain(object):
                                if 0 <= px < self.width and 0 <= py < self.length]
         return filtered_neighbours
 
-    def thermal_erode(self, iterations=1):
+    def thermal_erode(self, iterations=1, talus=0.5):
         """Perform one iteration of thermal erosion upon self.
 
         Args:
             iterations (int): Number of times to do thermal erosion.
+            talus (int): Minimumm height difference that will cause height transfter to a neighbour.
 
         """
         for _ in range(iterations):
             for x in range(self.width):
                 for y in range(self.length):
-                    # TODO: calculate height from adjacent values
-                    pass
+                    diff_total = 0
+                    diff_max = 0
+                    # get largest height difference with neighbours and total difference
+                    for nx, ny in self.get_vonneumann_neighbours(x, y):
+                        difference = self[x, y] - self[nx, ny]
+                        if difference > talus:
+                            diff_total += difference
+                            if difference > diff_max:
+                                diff_max = difference
+                    # transfer some height of current point to adjacent points <= current height - talus
+                    for nx, ny in self.get_vonneumann_neighbours(x, y):
+                        difference = self[x, y] - self[nx, ny]
+                        if difference > talus:
+                            transferred_height = (diff_max - talus)*(difference / float(diff_total))
+                            self[x, y] -= transferred_height
+                            self[nx, ny] += transferred_height
 
     def hydraulic_erode(self, iterations=1):
         """Perform one iteration of hydraulic erosion upon self.
