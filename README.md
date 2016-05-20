@@ -29,7 +29,6 @@ within the main directory.
     * 2d and 3d graphical representations
         * Uses matplotlib for 3d, top-down greyscale for 2d
     * Saving and loading terrains (uses .terr format)
-    * Get Von Neumann and Moore neighbours of point
     * Voronoi diagram version of terrain
         * Regions defined by closest positions on 2d grid to points
         * Input set of points to make regions around
