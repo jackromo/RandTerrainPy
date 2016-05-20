@@ -12,8 +12,6 @@
         * Random feature points w/ random or preset heights
             * If random, can decide on an interval, mean and std.dev
     * Erosion algorithms
-        * Implement as methods of Terrain
-        * Thermal erosion
         * Hydraulic erosion
 * Demo applications
     * Handwritten lines (variance in line from noise function)
