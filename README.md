@@ -1,6 +1,8 @@
 # RandTerrainPy
 
-This is a random terrain generator for Python. It's a work in progress, but if you're interested in contributing then email me at sharrackor@gmail.com.
+This is a random terrain generator for Python. 
+
+(If you're interested in contributing, then email me at sharrackor@gmail.com.)
 
 ## License
 

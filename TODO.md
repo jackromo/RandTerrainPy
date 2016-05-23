@@ -7,12 +7,6 @@
 
 ## Future Features
 
-* Noise generation
-    * Random Voronoi diagram generation
-        * Random feature points w/ random or preset heights
-            * If random, can decide on an interval, mean and std.dev
-    * Erosion algorithms
-        * Hydraulic erosion
 * Demo applications
     * Handwritten lines (variance in line from noise function)
     * Cloud generator
