@@ -294,19 +294,6 @@ class Terrain(object):
                             self[x, y] -= transferred_height
                             self[nx, ny] += transferred_height
 
-    def hydraulic_erode(self, iterations=1):
-        """Perform one iteration of hydraulic erosion upon self.
-
-        Args:
-            iterations(int): Number of times to do hydraulic erosion.
-
-        """
-        for _ in range(iterations):
-            for x in range(self.width):
-                for y in range(self.length):
-                    # TODO: calculate height from adjacent values
-                    pass
-
 
 class VoronoiTerrain(Terrain):
     """A Terrain where a set of regions are defined of positions closest to certain points.
