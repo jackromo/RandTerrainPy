@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="RandTerrainPy",
-    version="0.0.0",
+    version="1.0.0",
     url="http://github.com/jackromo/RandTerrainPy",
     license="MIT",
     description="Random terrain generator for Python",
